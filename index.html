@@ -6,992 +6,820 @@
 <title>Swadesh IT — Enterprise Software Solutions Since 2006</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,700&family=Epilogue:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
-/* ── TOKENS ── */
-:root {
-  --ease: cubic-bezier(.4,0,.2,1);
-  --tr: background-color .45s var(--ease), color .45s var(--ease), border-color .35s var(--ease), box-shadow .35s var(--ease);
-}
+:root { --ease: cubic-bezier(.4,0,.2,1); }
 [data-theme="dark"] {
-  --bg:        #0C0F14;
-  --bg1:       #131820;
-  --bg2:       #181F2A;
-  --bg3:       #1E2736;
-  --bd:        rgba(255,255,255,.07);
-  --bd2:       rgba(255,255,255,.13);
-  --tx:        #E8EEFA;
-  --tx2:       #7E8EA8;
-  --tx3:       #3D4F6A;
-  --ac:        #16a355;
-  --acg:       rgba(59,130,246,.15);
-  --gd:        #F59E0B;
-  --gdg:       rgba(245,158,11,.1);
-  --sh:        0 8px 40px rgba(0,0,0,.55);
-  --sh2:       0 2px 12px rgba(0,0,0,.4);
-  --grid:      rgba(255,255,255,.028);
+  --bg:#0C0F14; --bg1:#131820; --bg2:#181F2A; --bg3:#1E2736;
+  --bd:rgba(255,255,255,.07); --bd2:rgba(255,255,255,.13);
+  --tx:#E8EEFA; --tx2:#7E8EA8; --tx3:#3D4F6A;
+  --ac:#16a355; --acg:rgba(22,163,85,.15); --gd:#F59E0B;
+  --sh:0 8px 40px rgba(0,0,0,.55); --sh2:0 2px 12px rgba(0,0,0,.4);
+  --grid:rgba(255,255,255,.028);
 }
 [data-theme="light"] {
-  --bg:        #F5F2EC;
-  --bg1:       #EDE9E1;
-  --bg2:       #FFFFFF;
-  --bg3:       #E6E2D8;
-  --bd:        rgba(0,0,0,.07);
-  --bd2:       rgba(0,0,0,.13);
-  --tx:        #0F1623;
-  --tx2:       #5A6070;
-  --tx3:       #B8BCC8;
-  --ac:        #16a355;
-  --acg:       rgba(29,78,216,.1);
-  --gd:        #D97706;
-  --gdg:       rgba(217,119,6,.08);
-  --sh:        0 8px 40px rgba(0,0,0,.1);
-  --sh2:       0 2px 12px rgba(0,0,0,.06);
-  --grid:      rgba(0,0,0,.03);
+  --bg:#F5F2EC; --bg1:#EDE9E1; --bg2:#FFFFFF; --bg3:#E6E2D8;
+  --bd:rgba(0,0,0,.07); --bd2:rgba(0,0,0,.13);
+  --tx:#0F1623; --tx2:#5A6070; --tx3:#B8BCC8;
+  --ac:#16a355; --acg:rgba(22,163,85,.12); --gd:#D97706;
+  --sh:0 8px 40px rgba(0,0,0,.1); --sh2:0 2px 12px rgba(0,0,0,.06);
+  --grid:rgba(0,0,0,.03);
 }
-
-/* ── RESET ── */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--tx);font-family:'Epilogue',sans-serif;overflow-x:hidden;transition:var(--tr)}
-a{text-decoration:none;color:inherit}
-
-/* ── GRID BG ── */
-body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg); color:var(--tx);
+  font-family:'Epilogue',sans-serif; overflow-x:hidden;
+  transition:background .45s,color .45s;
+}
+a{text-decoration:none;color:inherit;}
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
-  background-size:60px 60px;transition:background-image .5s}
+  background-size:60px 60px;
+}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:2px;}
+.S{position:relative;z-index:1;}
+.sec-pad{padding:88px 0;}
 
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:2px}
+/* ── NAV ── */
+#mainNav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  padding:16px 0;transition:padding .3s,background .4s,border-color .4s;
+}
+#mainNav.pin{padding:10px 0;border-bottom:1px solid var(--bd);}
+[data-theme="dark"] #mainNav.pin{background:rgba(12,15,20,.93);backdrop-filter:blur(20px);}
+[data-theme="light"] #mainNav.pin{background:rgba(245,242,236,.93);backdrop-filter:blur(20px);}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.logo{
+  display:flex;align-items:center;gap:10px;
+  font-family:'Fraunces',serif;font-weight:700;font-size:18px;
+  color:var(--tx);white-space:nowrap;flex-shrink:0;
+}
+.logo-mk{width:34px;height:34px;border-radius:8px;overflow:hidden;flex-shrink:0;}
+.logo-mk img{width:100%;height:100%;object-fit:contain;}
+.logo-sub{font-size:9px;font-family:'JetBrains Mono';color:var(--tx2);display:block;letter-spacing:1px;line-height:1;}
+.desk-links{display:flex;gap:22px;list-style:none;margin:0;padding:0;}
+.desk-links a{font-size:13px;font-weight:500;color:var(--tx2);position:relative;padding-bottom:2px;transition:color .2s;}
+.desk-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--ac);transition:width .3s;}
+.desk-links a:hover{color:var(--tx);}
+.desk-links a:hover::after{width:100%;}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.tt{display:flex;align-items:center;background:var(--bg2);border:1px solid var(--bd2);border-radius:100px;padding:3px;transition:background .4s,border-color .4s;}
+.ttb{width:28px;height:24px;border-radius:100px;border:none;display:flex;align-items:center;justify-content:center;background:transparent;color:var(--tx2);cursor:pointer;transition:background .3s,color .3s;}
+.ttb.on{background:var(--ac);color:#fff;}
+.ttb svg{width:13px;height:13px;pointer-events:none;}
+.nav-cta{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--ac);color:#fff;padding:8px 16px;
+  border-radius:8px;font-size:13px;font-weight:600;
+  white-space:nowrap;transition:opacity .2s,transform .2s;
+}
+.nav-cta:hover{opacity:.88;transform:translateY(-1px);color:#fff;}
+.hamburger{
+  display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;
+  width:38px;height:38px;border-radius:8px;
+  background:var(--bg2);border:1px solid var(--bd2);cursor:pointer;
+}
+.hamburger span{display:block;width:16px;height:1.5px;background:var(--tx2);border-radius:2px;transition:all .3s;}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
 
-/* ══════════════════════════════════════
-   NAV
-══════════════════════════════════════ */
-nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:18px 56px;transition:padding .3s,background .4s,border-color .4s}
-nav.pin{border-bottom:1px solid var(--bd);padding:12px 56px}
-[data-theme="dark"] nav.pin{background:rgba(12,15,20,.92);backdrop-filter:blur(20px)}
-[data-theme="light"] nav.pin{background:rgba(245,242,236,.92);backdrop-filter:blur(20px)}
+/* Drawer */
+.mob-drawer{
+  position:fixed;top:0;left:0;right:0;bottom:0;z-index:490;
+  padding:82px 24px 32px;display:flex;flex-direction:column;overflow-y:auto;
+  opacity:0;transform:translateY(-10px);visibility:hidden;
+  transition:opacity .35s,transform .35s,visibility .35s;
+}
+[data-theme="dark"] .mob-drawer{background:rgba(12,15,20,.97);backdrop-filter:blur(24px);}
+[data-theme="light"] .mob-drawer{background:rgba(245,242,236,.97);backdrop-filter:blur(24px);}
+.mob-drawer.open{opacity:1;transform:none;visibility:visible;}
+.mob-nav{display:flex;flex-direction:column;gap:4px;margin-bottom:28px;}
+.mob-nav a{
+  font-family:'Fraunces',serif;font-size:clamp(26px,8vw,40px);font-weight:700;
+  color:var(--tx2);letter-spacing:-1px;padding:10px 0;border-bottom:1px solid var(--bd);
+  transition:color .2s,padding-left .2s;
+}
+.mob-nav a:last-child{border-bottom:none;}
+.mob-nav a:hover{color:var(--tx);padding-left:8px;}
+.mob-footer{margin-top:auto;display:flex;flex-direction:column;gap:10px;}
+.mob-info{font-size:13px;color:var(--tx2);display:flex;align-items:center;gap:10px;}
+.mob-info svg{width:14px;height:14px;color:var(--ac);flex-shrink:0;}
+.mob-cta{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--ac);color:#fff;padding:14px;border-radius:10px;
+  font-size:15px;font-weight:600;margin-top:8px;
+}
+.mob-cta:hover{opacity:.85;color:#fff;}
 
-.logo{display:flex;align-items:center;gap:11px;font-family:'Fraunces',serif;font-weight:700;font-size:19px;letter-spacing:-.3px;color:var(--tx)}
-.logo-mk{width:36px;height:36px;border-radius:9px;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:box-shadow .3s;background:transparent}
-.logo-mk img{width:100%;height:100%;object-fit:contain;display:block}
-.logo:hover .logo-mk{box-shadow:0 0 0 5px var(--acg)}
-.logo-sub{font-size:9.5px;font-weight:400;font-family:'JetBrains Mono';color:var(--tx2);display:block;letter-spacing:1px;line-height:1}
-.nav-ul{list-style:none;display:flex;gap:28px}
-.nav-ul a{font-size:13px;font-weight:500;color:var(--tx2);letter-spacing:.2px;transition:color .2s;position:relative;padding-bottom:2px}
-.nav-ul a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--ac);transition:width .3s}
-.nav-ul a:hover{color:var(--tx)}
-.nav-ul a:hover::after{width:100%}
-.nav-r{display:flex;align-items:center;gap:14px}
-.tt{display:flex;align-items:center;background:var(--bg2);border:1px solid var(--bd2);border-radius:100px;padding:4px;transition:background .4s,border-color .4s}
-.ttb{width:30px;height:26px;border-radius:100px;display:flex;align-items:center;justify-content:center;transition:background .3s,color .3s;color:var(--tx2)}
-.ttb.on{background:var(--ac);color:#fff}
-.ttb svg{width:14px;height:14px;pointer-events:none}
-.nav-cta{display:inline-flex;align-items:center;gap:7px;background:var(--ac);color:#fff;padding:9px 20px;border-radius:8px;font-size:13px;font-weight:600;letter-spacing:.2px;transition:opacity .2s,transform .2s,box-shadow .25s}
-.nav-cta:hover{opacity:.88;transform:translateY(-1px);box-shadow:0 4px 20px var(--acg)}
-.nav-cta svg{width:13px;height:13px}
+/* ── TAG / TITLE ── */
+.tag-label{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'JetBrains Mono';font-size:11px;color:var(--ac);
+  letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;
+}
+.tag-label::before{content:'';width:16px;height:1px;background:var(--ac);}
+.sec-title{
+  font-family:'Fraunces',serif;font-size:clamp(30px,5vw,62px);
+  font-weight:900;line-height:.93;letter-spacing:-2px;color:var(--tx);margin-bottom:12px;
+}
+.sec-title em{font-style:italic;font-weight:300;color:var(--tx2);}
+.sec-sub{font-size:15px;font-weight:300;color:var(--tx2);line-height:1.75;}
 
-/* ── Hamburger ── */
-.hamburger{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:40px;height:40px;border-radius:9px;background:var(--bg2);border:1px solid var(--bd2);cursor:pointer;transition:background .3s,border-color .4s;flex-shrink:0}
-.hamburger span{display:block;width:18px;height:1.5px;background:var(--tx2);border-radius:2px;transition:all .3s var(--ease)}
-.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
-.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
-.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+/* ── HERO ── */
+.hero-section{
+  min-height:100vh;padding-top:96px;padding-bottom:64px;
+  display:flex;align-items:center;
+}
+.kicker{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'JetBrains Mono';font-size:11px;color:var(--ac);
+  letter-spacing:2px;text-transform:uppercase;margin-bottom:22px;
+  opacity:0;animation:fi .7s .1s ease forwards;
+}
+.kicker-ln{width:22px;height:1px;background:var(--ac);}
+.hero-h1{
+  font-family:'Fraunces',serif;
+  font-size:clamp(44px,7.5vw,98px);
+  font-weight:900;line-height:.9;letter-spacing:-3px;color:var(--tx);
+  opacity:0;animation:ru .9s .2s var(--ease) forwards;
+}
+.hero-h1 em{font-style:italic;font-weight:300;color:var(--ac);}
+.hero-h1 .out{-webkit-text-stroke:1.5px var(--tx);color:transparent;}
+.hero-p{
+  margin-top:22px;font-size:16px;font-weight:300;color:var(--tx2);line-height:1.75;
+  opacity:0;animation:fi .8s .35s ease forwards;
+}
+.hero-p strong{color:var(--tx);font-weight:500;}
+.hero-btns{
+  margin-top:32px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  opacity:0;animation:fi .8s .45s ease forwards;
+}
+.btn-p{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--ac);color:#fff;padding:12px 24px;
+  border-radius:10px;font-size:14px;font-weight:600;
+  transition:transform .2s,box-shadow .25s;
+}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 28px var(--acg);color:#fff;}
+.btn-p svg{width:14px;height:14px;}
+.btn-g{display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:500;color:var(--tx2);transition:color .2s;}
+.btn-g:hover{color:var(--tx);}
+.btn-g svg{width:14px;height:14px;}
 
-/* ── Mobile Drawer ── */
-.mob-drawer{position:fixed;top:0;left:0;right:0;bottom:0;z-index:490;display:flex;flex-direction:column;padding:90px 24px 32px;background:var(--bg);border-bottom:1px solid var(--bd);transition:opacity .35s var(--ease),transform .35s var(--ease),visibility .35s;opacity:0;transform:translateY(-8px);visibility:hidden;overflow-y:auto}
-.mob-drawer.open{opacity:1;transform:none;visibility:visible}
-[data-theme="dark"] .mob-drawer{background:rgba(12,15,20,.97);backdrop-filter:blur(24px)}
-[data-theme="light"] .mob-drawer{background:rgba(245,242,236,.97);backdrop-filter:blur(24px)}
-.mob-nav{display:flex;flex-direction:column;gap:4px;margin-bottom:32px}
-.mob-nav a{font-family:'Fraunces',serif;font-size:clamp(28px,7vw,40px);font-weight:700;color:var(--tx2);letter-spacing:-1px;padding:10px 0;border-bottom:1px solid var(--bd);transition:color .2s,padding-left .2s}
-.mob-nav a:hover{color:var(--tx);padding-left:8px}
-.mob-nav a:last-child{border-bottom:none}
-.mob-footer-strip{margin-top:auto;display:flex;flex-direction:column;gap:12px}
-.mob-info{font-size:13px;color:var(--tx2);display:flex;align-items:center;gap:10px}
-.mob-info svg{width:15px;height:15px;color:var(--ac);flex-shrink:0}
-.mob-cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--ac);color:#fff;padding:14px;border-radius:10px;font-size:15px;font-weight:600;transition:opacity .2s}
-.mob-cta:hover{opacity:.85}
+/* Ring */
+.hero-right{
+  display:flex;flex-direction:column;align-items:flex-end;gap:20px;
+  opacity:0;animation:fi .9s .5s ease forwards;
+}
+.h-ring{
+  width:300px;height:300px;
+  border:1px solid var(--bd2);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;flex-shrink:0;
+}
+.h-ring::before{
+  content:'';position:absolute;inset:14px;border-radius:50%;
+  border:1px dashed var(--bd);animation:rot 32s linear infinite;
+}
+@keyframes rot{to{transform:rotate(360deg);}}
+.rc{text-align:center;}
+.rb{font-family:'Fraunces',serif;font-size:66px;font-weight:900;line-height:1;color:var(--tx);letter-spacing:-3px;}
+.rb sup{font-size:26px;color:var(--ac);vertical-align:super;}
+.rl{font-size:10px;color:var(--tx2);letter-spacing:1.5px;text-transform:uppercase;font-family:'JetBrains Mono';}
+.rbadge{position:absolute;width:78px;}
+.rbadge-i{background:var(--bg2);border:1px solid var(--bd2);border-radius:8px;padding:6px 8px;text-align:center;box-shadow:var(--sh2);}
+.rbn{font-family:'Fraunces',serif;font-weight:700;font-size:16px;color:var(--tx);line-height:1;}
+.rbl{font-size:8.5px;color:var(--tx2);letter-spacing:.5px;font-family:'JetBrains Mono';}
+.rbadge:nth-child(1){top:-15px;left:50%;transform:translateX(-50%);}
+.rbadge:nth-child(2){right:-15px;top:50%;transform:translateY(-50%);}
+.rbadge:nth-child(3){bottom:-15px;left:50%;transform:translateX(-50%);}
+.rbadge:nth-child(4){left:-15px;top:50%;transform:translateY(-50%);}
 
-/* ══════════════════════════════════════
-   SECTION SYSTEM
-══════════════════════════════════════ */
-.S{position:relative;z-index:1}
-.C{max-width:1200px;margin:0 auto;padding:0 56px}
-.sp{padding:108px 0}
-.sp-sm{padding:76px 0}
-.tag{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono';font-size:11px;color:var(--ac);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px}
-.tag::before{content:'';width:18px;height:1px;background:var(--ac)}
-.sh2{font-family:'Fraunces',serif;font-size:clamp(34px,4.5vw,66px);font-weight:900;line-height:.93;letter-spacing:-2px;color:var(--tx);margin-bottom:16px}
-.sh2 em{font-style:italic;font-weight:300;color:var(--tx2)}
-.sub{font-size:16px;font-weight:300;color:var(--tx2);max-width:500px;line-height:1.75}
+/* Tech strip */
+.tech-strip{
+  display:flex;background:var(--bg2);border:1px solid var(--bd);
+  border-radius:12px;overflow:hidden;width:100%;
+}
+.tech-item{
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  padding:15px 8px;border-right:1px solid var(--bd);
+  transition:background .2s;flex:1;
+}
+.tech-item:last-child{border-right:none;}
+.tech-item:hover{background:var(--bg3);}
+.tech-item svg{width:22px;height:22px;color:var(--ac);}
+.tech-item span{font-size:9.5px;font-family:'JetBrains Mono';color:var(--tx2);}
 
-/* ══════════════════════════════════════
-   HERO
-══════════════════════════════════════ */
-.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:0;padding:120px 0 90px;max-width:1400px;margin:0 auto}
-.hero-l{padding:0 56px}
-.hero-r{padding:0 56px 0 32px;display:flex;flex-direction:column;align-items:flex-end;gap:28px}
-.kicker{display:inline-flex;align-items:center;gap:9px;font-family:'JetBrains Mono';font-size:11px;color:var(--ac);letter-spacing:2px;text-transform:uppercase;margin-bottom:28px;opacity:0;animation:fi .7s .1s ease forwards}
-.kicker-ln{width:24px;height:1px;background:var(--ac)}
-.h1{font-family:'Fraunces',serif;font-size:clamp(50px,7vw,106px);font-weight:900;line-height:.9;letter-spacing:-3px;color:var(--tx);opacity:0;animation:ru .9s .2s var(--ease) forwards}
-.h1 em{font-style:italic;font-weight:300;color:var(--ac)}
-.h1 .out{-webkit-text-stroke:1.5px var(--tx);color:transparent;transition:-webkit-text-stroke .5s}
-.hero-p{margin-top:26px;font-size:17px;font-weight:300;color:var(--tx2);max-width:460px;line-height:1.75;opacity:0;animation:fi .8s .35s ease forwards}
-.hero-p strong{color:var(--tx);font-weight:500}
-.ha{margin-top:40px;display:flex;align-items:center;gap:18px;opacity:0;animation:fi .8s .45s ease forwards;flex-wrap:wrap}
-.bp{display:inline-flex;align-items:center;gap:10px;background:var(--ac);color:#fff;padding:14px 28px;border-radius:10px;font-size:14px;font-weight:600;position:relative;overflow:hidden;transition:transform .2s,box-shadow .25s}
-.bp::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);transform:translateX(-100%);transition:transform .5s}
-.bp:hover::after{transform:translateX(100%)}
-.bp:hover{transform:translateY(-2px);box-shadow:0 8px 28px var(--acg)}
-.bp svg{width:15px;height:15px;transition:transform .2s}
-.bp:hover svg{transform:translateX(3px)}
-.bt{display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:500;color:var(--tx2);transition:color .2s}
-.bt:hover{color:var(--tx)}
-.bt svg{width:15px;height:15px}
+/* Contact strip */
+.cs-strip{
+  display:flex;background:var(--bg2);border:1px solid var(--bd);
+  border-radius:12px;overflow:hidden;width:100%;
+}
+.cs-item{
+  display:flex;align-items:flex-start;gap:8px;
+  padding:12px 12px;border-right:1px solid var(--bd);
+  transition:background .2s;flex:1;min-width:0;
+}
+.cs-item:last-child{border-right:none;}
+.cs-item:hover{background:var(--bg3);}
+.cs-item svg{width:14px;height:14px;color:var(--ac);flex-shrink:0;margin-top:2px;}
+.cs-item strong{font-size:11.5px;color:var(--tx);font-weight:500;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cs-item span{font-size:10.5px;color:var(--tx2);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
-/* Hero ring */
-.h-ring{width:300px;height:300px;border:1px solid var(--bd2);border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;opacity:0;animation:fi 1s .55s ease forwards}
-.h-ring::before{content:'';position:absolute;inset:14px;border-radius:50%;border:1px dashed var(--bd);animation:rot 32s linear infinite}
-@keyframes rot{to{transform:rotate(360deg)}}
-.rc{text-align:center}
-.rb{font-family:'Fraunces',serif;font-size:76px;font-weight:900;line-height:1;color:var(--tx);letter-spacing:-3px}
-.rb sup{font-size:30px;color:var(--ac);vertical-align:super}
-.rl{font-size:11px;color:var(--tx2);letter-spacing:1.5px;text-transform:uppercase;margin-top:5px;font-family:'JetBrains Mono'}
-.rbadge{position:absolute;width:84px}
-.rbadge-i{background:var(--bg2);border:1px solid var(--bd2);border-radius:8px;padding:7px 10px;text-align:center;box-shadow:var(--sh2);transition:background .4s,border-color .4s}
-.rbn{font-family:'Fraunces',serif;font-weight:700;font-size:19px;color:var(--tx);line-height:1}
-.rbl{font-size:9.5px;color:var(--tx2);letter-spacing:.5px;margin-top:2px;font-family:'JetBrains Mono'}
-.rbadge:nth-child(1){top:-18px;left:50%;transform:translateX(-50%)}
-.rbadge:nth-child(2){right:-18px;top:50%;transform:translateY(-50%)}
-.rbadge:nth-child(3){bottom:-18px;left:50%;transform:translateX(-50%)}
-.rbadge:nth-child(4){left:-18px;top:50%;transform:translateY(-50%)}
+/* ── MARQUEE ── */
+.mq-wrap{
+  border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);
+  background:var(--bg1);overflow:hidden;
+}
+.mq-track{display:flex;animation:mq 30s linear infinite;width:max-content;}
+.mq-track:hover{animation-play-state:paused;}
+.mq-item{
+  display:flex;align-items:center;gap:11px;
+  padding:15px 28px;border-right:1px solid var(--bd);white-space:nowrap;
+  transition:background .2s;
+}
+.mq-item:hover{background:var(--bg3);}
+.mq-item svg{width:14px;height:14px;color:var(--ac);flex-shrink:0;}
+.mq-item span{font-size:11.5px;font-weight:500;color:var(--tx2);letter-spacing:.5px;text-transform:uppercase;}
+@keyframes mq{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
 
-/* Hero right: tech strip */
-.hero-tech-strip{display:flex;align-items:center;background:var(--bg2);border:1px solid var(--bd);border-radius:12px;overflow:hidden;opacity:0;animation:fi .8s .7s ease forwards;transition:background .4s,border-color .4s;width:100%}
-.hts-item{display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px 22px;border-right:1px solid var(--bd);transition:background .2s,border-color .4s;flex:1}
-.hts-item:last-child{border-right:none}
-.hts-item:hover{background:var(--bg3)}
-.hts-item svg{width:26px;height:26px;color:var(--ac)}
-.hts-name{font-size:10px;font-family:'JetBrains Mono';color:var(--tx2);letter-spacing:.5px}
+/* CLI logo marquee */
+.cli-mq-wrap{overflow:hidden;position:relative;padding:56px 0;background:var(--bg);}
+.cli-mq-wrap::before,.cli-mq-wrap::after{
+  content:'';position:absolute;top:0;width:100px;height:100%;z-index:2;pointer-events:none;
+}
+.cli-mq-wrap::before{left:0;background:linear-gradient(90deg,var(--bg),transparent);}
+.cli-mq-wrap::after{right:0;background:linear-gradient(-90deg,var(--bg),transparent);}
+.cli-mq-item{
+  height:76px;padding:0 32px;border-right:1px solid var(--bd);
+  display:flex!important;align-items:center;justify-content:center;
+}
+.cli-logo-img{display:flex;align-items:center;justify-content:center;opacity:.55;transition:opacity .3s;}
+.cli-logo-img img{max-width:100px;max-height:46px;object-fit:contain;filter:grayscale(100%) brightness(.75);transition:filter .3s;}
+.cli-mq-item:hover .cli-logo-img{opacity:1;}
+.cli-mq-item:hover .cli-logo-img img{filter:grayscale(0%) brightness(1);}
 
-/* Contact strip hero */
-.h-strip{display:flex;align-items:stretch;background:var(--bg2);border:1px solid var(--bd);border-radius:12px;overflow:hidden;opacity:0;animation:fi .8s .7s ease forwards;transition:background .4s,border-color .4s;width:100%}
-.hs-item{display:flex;align-items:center;gap:10px;padding:14px 16px;border-right:1px solid var(--bd);transition:background .2s,border-color .4s;flex:1;min-width:0}
-.hs-item:last-child{border-right:none}
-.hs-item:hover{background:var(--bg3)}
-.hs-item svg{width:15px;height:15px;color:var(--ac);flex-shrink:0}
-.hs-item span{font-size:11.5px;color:var(--tx2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hs-item strong{font-size:12px;color:var(--tx);font-weight:500;display:block;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* ── SOLUTIONS ── */
+.sol-bg{background:var(--bg1);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);}
+.sol-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1px;background:var(--bd);border:1px solid var(--bd);border-radius:16px;overflow:hidden;
+}
+.sol-card{background:var(--bg2);padding:26px 20px;position:relative;overflow:hidden;transition:background .3s;}
+.sol-card::after{content:'';position:absolute;top:0;left:0;width:2px;height:0;background:var(--ac);transition:height .4s;}
+.sol-card:hover{background:var(--bg3);}
+.sol-card:hover::after{height:100%;}
+.sc-ico{width:40px;height:40px;border-radius:10px;background:var(--acg);border:1px solid rgba(22,163,85,.2);display:flex;align-items:center;justify-content:center;margin-bottom:14px;transition:transform .3s;}
+.sol-card:hover .sc-ico{transform:scale(1.08);}
+.sc-ico svg{width:20px;height:20px;color:var(--ac);}
+.sc-n{font-size:10px;color:var(--tx3);font-family:'JetBrains Mono';letter-spacing:1px;margin-bottom:6px;}
+.sc-cat{font-size:10px;color:var(--ac);font-family:'JetBrains Mono';letter-spacing:.5px;margin-bottom:7px;}
+.sc-name{font-family:'Fraunces',serif;font-size:15px;font-weight:700;color:var(--tx);margin-bottom:7px;}
+.sc-desc{font-size:11.5px;color:var(--tx2);line-height:1.65;}
+.sc-btn{
+  display:inline-flex;align-items:center;gap:5px;
+  margin-top:12px;font-size:11.5px;font-weight:600;color:var(--ac);
+  opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s;
+}
+.sol-card:hover .sc-btn{opacity:1;transform:none;}
+.sc-btn svg{width:12px;height:12px;}
 
-/* ══════════════════════════════════════
-   MARQUEE
-══════════════════════════════════════ */
-.mq-w{border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);background:var(--bg1);overflow:hidden;transition:background .5s,border-color .4s}
-.mq{display:flex;gap:0;animation:mq 30s linear infinite;width:max-content}
-.mq:hover{animation-play-state:paused}
-.mq-i{display:flex;align-items:center;gap:13px;padding:17px 36px;border-right:1px solid var(--bd);white-space:nowrap;transition:background .2s,border-color .4s}
-.mq-i:hover{background:var(--bg3)}
-.mq-i svg{width:16px;height:16px;color:var(--ac);flex-shrink:0}
-.mq-i span{font-size:12px;font-weight:500;color:var(--tx2);letter-spacing:.5px;text-transform:uppercase}
-@keyframes mq{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-
-/* ══════════════════════════════════════
-   SOLUTIONS
-══════════════════════════════════════ */
-.sol-bg{background:var(--bg1);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);transition:background .5s,border-color .4s}
-.sol-hdr{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:end;margin-bottom:56px}
-.sol-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd);border-radius:16px;overflow:hidden;transition:background .4s,border-color .4s}
-.sol-card{background:var(--bg2);padding:30px 26px;position:relative;overflow:hidden;transition:background .4s}
-.sol-card::after{content:'';position:absolute;top:0;left:0;width:2px;height:0;background:var(--ac);transition:height .4s var(--ease)}
-.sol-card:hover{background:var(--bg3)}
-.sol-card:hover::after{height:100%}
-.sc-ico{width:44px;height:44px;border-radius:10px;background:var(--acg);border:1px solid rgba(59,130,246,.2);display:flex;align-items:center;justify-content:center;margin-bottom:18px;transition:background .3s,transform .3s}
-[data-theme="light"] .sc-ico{background:rgba(29,78,216,.08);border-color:rgba(29,78,216,.15)}
-.sol-card:hover .sc-ico{transform:scale(1.08)}
-.sc-ico svg{width:22px;height:22px;color:var(--ac)}
-.sc-n{font-size:10px;color:var(--tx3);font-family:'JetBrains Mono';letter-spacing:1px;margin-bottom:9px}
-.sc-name{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--tx);margin-bottom:8px;letter-spacing:-.2px}
-.sc-desc{font-size:12.5px;color:var(--tx2);line-height:1.65}
-.sc-tag{display:inline-flex;margin-top:14px;font-size:11px;font-weight:600;color:var(--ac);opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s}
-.sol-card:hover .sc-tag{opacity:1;transform:none}
-.sc-btn{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:12px;font-weight:600;color:var(--ac);text-decoration:none;opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s,color .2s}
-.sol-card:hover .sc-btn{opacity:1;transform:none}
-.sc-btn:hover{color:var(--tx)}
-.sc-btn svg{width:14px;height:14px;transition:transform .2s}
-.sc-btn:hover svg{transform:translateX(3px)}
-
-/* ══════════════════════════════════════
-   CLIENTS
-══════════════════════════════════════ */
-.cli-layout{display:grid;grid-template-columns:300px 1fr;gap:72px;align-items:start}
-.cli-sticky{position:sticky;top:110px}
-.cli-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.cli-card{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:10px;transition:background .3s,border-color .3s,transform .3s,box-shadow .3s}
-.cli-card:hover{border-color:var(--bd2);transform:translateY(-3px);box-shadow:var(--sh2)}
-.cli-logo-box{height:52px;display:flex;align-items:center}
-.cli-abbr{font-family:'Fraunces',serif;font-size:22px;font-weight:900;color:var(--ac);letter-spacing:-1px}
-.cli-name{font-family:'Fraunces',serif;font-size:14px;font-weight:700;color:var(--tx);letter-spacing:-.1px}
-.cli-sol{font-family:'JetBrains Mono';font-size:10px;color:var(--tx3);letter-spacing:.5px;text-transform:uppercase;line-height:1.5}
-.cli-type{font-size:12px;color:var(--tx2);margin-top:2px}
-
-/* ── Client Marquee ── */
-.cli-marquee-wrap{padding:80px 0;overflow:hidden;position:relative;z-index:1}
-.cli-marquee-wrap::before,.cli-marquee-wrap::after{content:'';position:absolute;top:0;width:120px;height:100%;z-index:2;pointer-events:none}
-.cli-marquee-wrap::before{left:0;background:linear-gradient(90deg,var(--bg),transparent)}
-.cli-marquee-wrap::after{right:0;background:linear-gradient(-90deg,var(--bg),transparent)}
-.mq-i.cli-logo{height:100px;border-right:1px solid var(--bd);display:flex!important;align-items:center;justify-content:center;padding:0 40px;background:transparent;transition:background .3s}
-.cli-logo-img{font-family:'Fraunces',serif;font-weight:900;font-size:24px;color:var(--tx3);display:flex;align-items:center;justify-content:center;width:100%;height:100%;opacity:.6;transition:all .3s ease;text-transform:uppercase;letter-spacing:-1px;border:2px solid var(--bd);border-radius:8px;padding:10px 20px}
-.cli-logo:hover .cli-logo-img{opacity:1;color:var(--tx);border-color:var(--ac);background:var(--bg2);box-shadow:0 4px 20px var(--sh2)}
-.cli-logo-img img{max-width:120px;max-height:60px;object-fit:contain;filter:grayscale(100%) brightness(0.8);transition:filter .3s,transform .3s}
-.cli-logo:hover .cli-logo-img img{filter:grayscale(0%) brightness(1);transform:scale(1.05)}
-
-/* ══════════════════════════════════════
-   PROCESS
-══════════════════════════════════════ */
-.proc-bg{background:var(--bg1);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);transition:background .5s,border-color .4s}
-.proc-grid{display:grid;grid-template-columns:1fr;gap:0;margin-top:56px}
-.proc-step{display:grid;grid-template-columns:60px 1fr 40px;gap:0;align-items:stretch;padding:0;border-bottom:1px solid var(--bd);transition:border-color .4s}
-.proc-step:last-child{border-bottom:none}
-.proc-num-col{display:flex;flex-direction:column;align-items:center;padding:32px 0;border-right:1px solid var(--bd);transition:border-color .4s;position:relative}
-.proc-num{font-family:'Fraunces',serif;font-size:28px;font-weight:900;color:var(--tx3);line-height:1;transition:color .3s}
-.proc-step:hover .proc-num{color:var(--ac)}
-.proc-line{width:1px;flex:1;background:var(--bd);margin-top:12px;transition:background .4s}
-.proc-body{padding:28px 36px;display:flex;flex-direction:column;justify-content:center;gap:8px;transition:background .3s}
-.proc-step:hover .proc-body{background:var(--bg3)}
-.proc-title{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--tx);letter-spacing:-.2px}
-.proc-desc{font-size:13.5px;color:var(--tx2);line-height:1.7;max-width:700px}
-.proc-icon{display:flex;align-items:center;justify-content:center;padding:28px 20px 28px 0}
-.proc-icon svg{width:22px;height:22px;color:var(--tx3);transition:color .3s}
-.proc-step:hover .proc-icon svg{color:var(--ac)}
-
-/* ══════════════════════════════════════
-   ABOUT
-══════════════════════════════════════ */
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:90px;align-items:center}
-.about-l{position:relative}
-.big-bg-txt{font-family:'Fraunces',serif;font-size:clamp(100px,14vw,180px);font-weight:900;color:var(--bd);position:absolute;top:-30px;left:-20px;letter-spacing:-6px;pointer-events:none;user-select:none;transition:color .5s;line-height:1}
-.about-content{position:relative;z-index:1}
-.about-pts{margin-top:40px;display:flex;flex-direction:column;gap:0}
-.apt{display:flex;gap:20px;align-items:flex-start;padding:24px 0;border-bottom:1px solid var(--bd);transition:border-color .4s}
-.apt:first-child{border-top:1px solid var(--bd)}
-.apt-idx{font-family:'JetBrains Mono';font-size:11px;color:var(--ac);letter-spacing:1px;flex-shrink:0;min-width:26px;margin-top:2px}
-.apt-h{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--tx);margin-bottom:6px;letter-spacing:-.2px}
-.apt-p{font-size:13.5px;color:var(--tx2);line-height:1.7}
-.about-r{display:flex;flex-direction:column;gap:18px}
-.astat{background:var(--bg2);border:1px solid var(--bd);border-radius:14px;padding:26px 28px;transition:background .4s,border-color .4s,transform .3s}
-.astat:hover{transform:translateX(4px);border-color:var(--bd2)}
-.astat-n{font-family:'Fraunces',serif;font-size:46px;font-weight:900;color:var(--tx);letter-spacing:-2px;line-height:1}
-.astat-n span{color:var(--ac)}
-.astat-l{font-size:13px;color:var(--tx2);margin-top:5px;font-weight:300}
-.abar{margin-top:16px;height:3px;background:var(--bg3);border-radius:2px;overflow:hidden;transition:background .4s}
-.afill{height:100%;background:linear-gradient(90deg,var(--ac),var(--gd));border-radius:2px;transition:width 1.6s var(--ease)}
-.atags{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
-.atag{background:var(--bg3);border:1px solid var(--bd2);border-radius:100px;padding:6px 14px;font-size:11.5px;font-weight:500;color:var(--tx2);transition:background .2s,color .2s,border-color .2s}
-.atag:hover{background:var(--acg);color:var(--ac);border-color:var(--ac)}
-.ceo-card{background:var(--bg2);border:1px solid var(--bd);border-radius:14px;padding:24px 26px;display:flex;gap:20px;align-items:flex-start;transition:background .4s,border-color .4s}
-.ceo-av{width:52px;height:52px;border-radius:12px;background:var(--acg);border:1px solid rgba(59,130,246,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
-.ceo-av img{width:100%;height:100%;object-fit:cover}
-.ceo-name{font-family:'Fraunces',serif;font-size:16px;font-weight:700;color:var(--tx);letter-spacing:-.2px;margin-bottom:3px}
-.ceo-role{font-family:'JetBrains Mono';font-size:10px;color:var(--ac);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
-.ceo-creds{font-size:12px;color:var(--tx2);line-height:1.6}
-
-/* ══════════════════════════════════════
-   CONTACT
-══════════════════════════════════════ */
-.contact-box{background:var(--bg2);border:1px solid var(--bd);border-radius:22px;padding:72px;position:relative;overflow:hidden;transition:background .4s,border-color .4s}
-.contact-box::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,var(--ac),transparent)}
-.contact-in{display:grid;grid-template-columns:1fr 1.15fr;gap:72px;align-items:start}
-.c-l h2{font-family:'Fraunces',serif;font-size:clamp(32px,4vw,58px);letter-spacing:-1.5px;color:var(--tx);line-height:.93;margin-bottom:18px}
-.c-l h2 span{font-style:italic;font-weight:300;color:var(--ac)}
-.c-l p{font-size:15px;color:var(--tx2);line-height:1.7;margin-bottom:36px}
-.c-info{display:flex;flex-direction:column;gap:14px}
-.ci-row{display:flex;align-items:flex-start;gap:13px;font-size:13.5px;color:var(--tx2);line-height:1.5}
-.ci-ico{width:36px;height:36px;border-radius:8px;background:var(--bg3);border:1px solid var(--bd2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .4s,border-color .4s}
-.ci-ico svg{width:16px;height:16px;color:var(--ac)}
-.ci-row strong{color:var(--tx);font-weight:500;display:block;font-size:13px}
-.cf{display:flex;flex-direction:column;gap:15px}
-.fr{display:grid;grid-template-columns:1fr 1fr;gap:15px}
-.fg{display:flex;flex-direction:column;gap:6px}
-.fg label{font-size:11px;font-weight:500;color:var(--tx2);letter-spacing:.7px;text-transform:uppercase;font-family:'JetBrains Mono'}
-.fg input,.fg select,.fg textarea{background:var(--bg1);border:1px solid var(--bd2);border-radius:9px;padding:12px 15px;color:var(--tx);font-family:'Epilogue';font-size:14px;font-weight:300;outline:none;resize:none;width:100%;transition:border-color .25s,background .3s,box-shadow .25s,color .4s}
-.fg input::placeholder,.fg textarea::placeholder{color:var(--tx3)}
-.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--ac);box-shadow:0 0 0 3px var(--acg)}
-.fg select option{background:var(--bg2)}
-.fsub{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;background:var(--tx);color:var(--bg);padding:14px;border-radius:9px;font-family:'Epilogue';font-size:14px;font-weight:600;letter-spacing:.2px;transition:background .3s,color .3s,transform .2s,box-shadow .25s;border:none;margin-top:4px;cursor:pointer}
-.fsub svg{width:15px;height:15px;transition:transform .2s}
-.fsub:hover{transform:translateY(-2px);box-shadow:var(--sh)}
-.fsub:hover svg{transform:translateX(3px)}
-.fsub.ok{background:#10b981;color:#fff}
-
-/* ══════════════════════════════════════
-   FOOTER
-══════════════════════════════════════ */
-footer{border-top:1px solid var(--bd);padding:40px 0;transition:border-color .4s}
-.foot{display:flex;align-items:center;justify-content:space-between}
-.f-logo{font-family:'Fraunces',serif;font-weight:700;font-size:18px;color:var(--tx);letter-spacing:-.2px}
-.f-logo span{color:var(--ac)}
-.f-copy{font-size:12.5px;color:var(--tx2)}
-.f-links{display:flex;gap:22px}
-.f-links a{font-size:12.5px;color:var(--tx2);transition:color .2s}
-.f-links a:hover{color:var(--tx)}
-
-/* ══════════════════════════════════════
-   ANIMATIONS
-══════════════════════════════════════ */
-@keyframes fi{from{opacity:0}to{opacity:1}}
-@keyframes ru{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
-.rev{opacity:0;transform:translateY(28px);transition:opacity .75s ease,transform .75s ease}
-.revL{opacity:0;transform:translateX(-30px);transition:opacity .75s ease,transform .75s ease}
-.revR{opacity:0;transform:translateX(30px);transition:opacity .75s ease,transform .75s ease}
-.rev.on,.revL.on,.revR.on{opacity:1;transform:none}
-
-/* ══════════════════════════════════════
-   RESPONSIVE — 1100px (Large Tablet)
-══════════════════════════════════════ */
-@media(max-width:1100px){
-  nav,nav.pin{padding-left:28px;padding-right:28px}
-  .C{padding:0 28px}
-  .sol-grid{grid-template-columns:repeat(2,1fr)}
-  .cli-layout{grid-template-columns:1fr;gap:44px}
-  .cli-sticky{position:static}
+/* ── CLIENTS ── */
+.cli-card{
+  background:var(--bg2);border:1px solid var(--bd);border-radius:12px;
+  padding:16px;display:flex;flex-direction:column;gap:7px;
+  transition:transform .3s,box-shadow .3s,border-color .3s;height:100%;
+}
+.cli-card:hover{border-color:var(--bd2);transform:translateY(-3px);box-shadow:var(--sh2);}
+.cli-abbr{font-family:'Fraunces',serif;font-size:20px;font-weight:900;color:var(--ac);}
+.cli-name{font-family:'Fraunces',serif;font-size:13px;font-weight:700;color:var(--tx);}
+.cli-sol{font-family:'JetBrains Mono';font-size:9.5px;color:var(--tx3);letter-spacing:.5px;text-transform:uppercase;line-height:1.5;}
+.cli-type{font-size:11px;color:var(--tx2);}
+.cli-more{
+  border:1px dashed var(--bd2);border-radius:12px;
+  display:flex;align-items:center;justify-content:center;min-height:110px;height:100%;
 }
 
-/* ══════════════════════════════════════
-   RESPONSIVE — 900px (Tablet)
-══════════════════════════════════════ */
-@media(max-width:900px){
-  /* Nav */
-  nav,nav.pin{padding-left:20px;padding-right:20px}
-  .nav-ul,.nav-cta{display:none}
-  .hamburger{display:flex}
-
-  /* Hero */
-  .hero{grid-template-columns:1fr;padding:100px 20px 60px;min-height:auto;gap:52px}
-  .hero-l{padding:0}
-  .hero-r{padding:0;align-items:center}
-  .h1{font-size:clamp(48px,11vw,72px);letter-spacing:-2px}
-  .hero-p{font-size:15px;max-width:100%}
-  .ha{gap:14px}
-  .bp{padding:13px 24px;font-size:13px}
-
-  /* Ring */
-  .h-ring{width:260px;height:260px}
-  .rb{font-size:60px}
-  .rb sup{font-size:24px}
-  .rbadge{width:74px}
-  .rbn{font-size:16px}
-  .rbl{font-size:8.5px}
-
-  /* Tech strip */
-  .hero-tech-strip{width:100%}
-  .hts-item{padding:14px 10px}
-  .hts-item svg{width:22px;height:22px}
-  .hts-name{font-size:9px}
-
-  /* Contact strip */
-  .h-strip{flex-wrap:wrap}
-  .hs-item{flex:1 0 calc(50% - 1px);border-bottom:1px solid var(--bd)}
-  .hs-item:last-child{border-right:none;border-bottom:none}
-  .hs-item:nth-child(2){border-right:none}
-
-  /* Solutions */
-  .sol-hdr{grid-template-columns:1fr;gap:20px;margin-bottom:36px}
-
-  /* About */
-  .about-grid{grid-template-columns:1fr;gap:44px}
-  .big-bg-txt{font-size:clamp(80px,20vw,140px)}
-
-  /* Contact */
-  .contact-in{grid-template-columns:1fr;gap:36px}
-  .contact-box{padding:36px 28px}
-
-  /* Footer */
-  .foot{flex-direction:column;gap:16px;text-align:center}
-  .f-links{justify-content:center;flex-wrap:wrap;gap:16px}
-
-  /* Proc */
-  .sp{padding:72px 0}
+/* ── PROCESS ── */
+.proc-bg{background:var(--bg1);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);}
+.proc-wrap{border:1px solid var(--bd);border-radius:16px;overflow:hidden;}
+.proc-step{
+  display:grid;grid-template-columns:52px 1fr 36px;
+  align-items:stretch;border-bottom:1px solid var(--bd);
 }
+.proc-step:last-child{border-bottom:none;}
+.proc-num-col{display:flex;flex-direction:column;align-items:center;padding:26px 0;border-right:1px solid var(--bd);}
+.proc-num{font-family:'Fraunces',serif;font-size:24px;font-weight:900;color:var(--tx3);transition:color .3s;}
+.proc-step:hover .proc-num{color:var(--ac);}
+.proc-line{width:1px;flex:1;background:var(--bd);margin-top:8px;}
+.proc-body{padding:22px 24px;display:flex;flex-direction:column;gap:6px;transition:background .3s;}
+.proc-step:hover .proc-body{background:var(--bg3);}
+.proc-title{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--tx);}
+.proc-desc{font-size:13px;color:var(--tx2);line-height:1.7;}
+.proc-icon{display:flex;align-items:center;justify-content:center;padding:0 12px 0 0;}
+.proc-icon svg{width:18px;height:18px;color:var(--tx3);transition:color .3s;}
+.proc-step:hover .proc-icon svg{color:var(--ac);}
 
-/* ══════════════════════════════════════
-   RESPONSIVE — 640px (Mobile)
-══════════════════════════════════════ */
-@media(max-width:640px){
-  /* Hero */
-  .hero{padding:88px 16px 48px;gap:40px}
-  .h1{font-size:clamp(40px,12vw,60px);letter-spacing:-1.5px}
-  .kicker{font-size:10px}
-  .hero-p{font-size:14px;margin-top:20px}
-  .ha{margin-top:28px;gap:12px}
-  .bp{padding:12px 20px;font-size:13px}
-  .bt{font-size:13px}
-
-  /* Ring — smaller */
-  .h-ring{width:210px;height:210px}
-  .rb{font-size:46px;letter-spacing:-2px}
-  .rb sup{font-size:18px}
-  .rl{font-size:9px}
-  .rbadge{width:62px}
-  .rbn{font-size:13px}
-  .rbl{font-size:7.5px}
-  .rbadge:nth-child(2){right:-14px}
-  .rbadge:nth-child(4){left:-14px}
-  .rbadge:nth-child(1){top:-14px}
-  .rbadge:nth-child(3){bottom:-14px}
-
-  /* Tech strip — 2x2 */
-  .hero-tech-strip{flex-wrap:wrap;border-radius:10px}
-  .hts-item{flex:1 0 50%;min-width:0}
-  .hts-item:nth-child(1),.hts-item:nth-child(2){border-bottom:1px solid var(--bd)}
-  .hts-item:nth-child(2){border-right:none}
-  .hts-item:nth-child(4){border-right:none}
-
-  /* Contact strip — stacked */
-  .h-strip{flex-direction:column;border-radius:10px}
-  .hs-item{flex:none;width:100%;border-right:none!important;border-bottom:1px solid var(--bd)!important}
-  .hs-item:last-child{border-bottom:none!important}
-
-  /* Sol grid */
-  .sol-grid{grid-template-columns:1fr}
-  .sol-card{padding:22px 18px}
-
-  /* Solutions header */
-  .sol-hdr{margin-bottom:28px}
-  .sh2{letter-spacing:-1px}
-
-  /* Cli grid */
-  .cli-grid{grid-template-columns:1fr 1fr}
-  .cli-card{padding:14px}
-  .cli-name{font-size:12px}
-  .cli-type{font-size:11px}
-
-  /* Process */
-  .proc-step{grid-template-columns:44px 1fr 0}
-  .proc-icon{display:none}
-  .proc-num-col{padding:20px 0}
-  .proc-num{font-size:22px}
-  .proc-body{padding:20px 16px}
-  .proc-title{font-size:16px}
-  .proc-desc{font-size:12.5px}
-
-  /* Contact */
-  .contact-box{padding:24px 16px;border-radius:16px}
-  .fr{grid-template-columns:1fr}
-  .c-l h2{font-size:clamp(28px,8vw,40px)}
-
-  /* About */
-  .astat{padding:20px}
-  .astat-n{font-size:36px}
-  .big-bg-txt{display:none}
-
-  /* Footer */
-  .C{padding:0 16px}
-  .sp{padding:56px 0}
-  .f-copy{font-size:11.5px}
-
-  /* Marquee small */
-  .mq-i{padding:14px 20px;gap:9px}
-  .mq-i svg{width:13px;height:13px}
-  .mq-i span{font-size:11px}
-
-  /* Clients marquee */
-  .cli-marquee-wrap{padding:40px 0}
-  .mq-i.cli-logo{padding:0 24px;height:70px}
-  .cli-logo-img img{max-width:80px;max-height:40px}
+/* ── ABOUT ── */
+.big-bg-txt{
+  font-family:'Fraunces',serif;font-size:clamp(80px,14vw,160px);
+  font-weight:900;color:var(--bd);position:absolute;
+  top:-20px;left:-15px;letter-spacing:-5px;pointer-events:none;line-height:1;
 }
-
-/* ══════════════════════════════════════
-   RESPONSIVE — 400px (Small Mobile)
-══════════════════════════════════════ */
-@media(max-width:400px){
-  .h-ring{width:180px;height:180px}
-  .rb{font-size:38px}
-  .cli-grid{grid-template-columns:1fr}
-  .ha{flex-direction:column;align-items:flex-start;gap:12px}
-  .bp,.bt{width:100%;justify-content:center}
+.about-content{position:relative;z-index:1;}
+.apt{display:flex;gap:16px;align-items:flex-start;padding:20px 0;border-bottom:1px solid var(--bd);}
+.apt:first-child{border-top:1px solid var(--bd);}
+.apt-idx{font-family:'JetBrains Mono';font-size:11px;color:var(--ac);flex-shrink:0;min-width:22px;margin-top:2px;}
+.apt-h{font-family:'Fraunces',serif;font-size:15.5px;font-weight:700;color:var(--tx);margin-bottom:4px;}
+.apt-p{font-size:12.5px;color:var(--tx2);line-height:1.7;}
+.astat{background:var(--bg2);border:1px solid var(--bd);border-radius:14px;padding:22px 24px;transition:transform .3s,border-color .3s;}
+.astat:hover{transform:translateX(4px);border-color:var(--bd2);}
+.astat-n{font-family:'Fraunces',serif;font-size:42px;font-weight:900;color:var(--tx);letter-spacing:-2px;line-height:1;}
+.astat-n span{color:var(--ac);}
+.astat-l{font-size:12.5px;color:var(--tx2);margin-top:4px;}
+.abar{margin-top:12px;height:3px;background:var(--bg3);border-radius:2px;overflow:hidden;}
+.afill{height:100%;background:linear-gradient(90deg,var(--ac),var(--gd));border-radius:2px;transition:width 1.6s var(--ease);}
+.atag{
+  background:var(--bg3);border:1px solid var(--bd2);border-radius:100px;
+  padding:5px 12px;font-size:11px;font-weight:500;color:var(--tx2);
+  transition:background .2s,color .2s,border-color .2s;display:inline-block;
 }
+.atag:hover{background:var(--acg);color:var(--ac);border-color:var(--ac);}
+.ceo-card{background:var(--bg2);border:1px solid var(--bd);border-radius:14px;padding:20px;display:flex;gap:16px;align-items:flex-start;}
+.ceo-av{width:48px;height:48px;border-radius:12px;background:var(--acg);overflow:hidden;flex-shrink:0;}
+.ceo-av img{width:100%;height:100%;object-fit:cover;}
+.ceo-name{font-family:'Fraunces',serif;font-size:15px;font-weight:700;color:var(--tx);margin-bottom:2px;}
+.ceo-role{font-family:'JetBrains Mono';font-size:9.5px;color:var(--ac);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
+.ceo-creds{font-size:11.5px;color:var(--tx2);line-height:1.6;}
 
-/* ── Nav on mobile: compact logo ── */
-@media(max-width:360px){
-  .logo-sub{display:none}
-  nav,nav.pin{padding-left:14px;padding-right:14px}
+/* ── CONTACT ── */
+.contact-box{
+  background:var(--bg2);border:1px solid var(--bd);border-radius:20px;
+  padding:56px;position:relative;overflow:hidden;
+  transition:background .4s,border-color .4s;
+}
+.contact-box::before{
+  content:'';position:absolute;top:0;left:20%;right:20%;
+  height:1px;background:linear-gradient(90deg,transparent,var(--ac),transparent);
+}
+.contact-h{font-family:'Fraunces',serif;font-size:clamp(26px,4vw,50px);letter-spacing:-1.5px;color:var(--tx);line-height:.93;margin-bottom:16px;}
+.contact-h span{font-style:italic;font-weight:300;color:var(--ac);}
+.ci-row{display:flex;align-items:flex-start;gap:12px;font-size:13px;color:var(--tx2);line-height:1.5;}
+.ci-ico{width:32px;height:32px;border-radius:8px;background:var(--bg3);border:1px solid var(--bd2);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ci-ico svg{width:14px;height:14px;color:var(--ac);}
+.ci-row strong{color:var(--tx);font-weight:500;display:block;font-size:13px;}
+.fg{display:flex;flex-direction:column;gap:5px;}
+.fg label{font-size:10.5px;font-weight:500;color:var(--tx2);letter-spacing:.7px;text-transform:uppercase;font-family:'JetBrains Mono';}
+.fg input,.fg select,.fg textarea{
+  background:var(--bg1);border:1px solid var(--bd2);border-radius:9px;
+  padding:11px 13px;color:var(--tx);font-family:'Epilogue';font-size:14px;
+  font-weight:300;outline:none;resize:none;width:100%;
+  transition:border-color .25s,box-shadow .25s,background .3s,color .4s;
+}
+.fg input::placeholder,.fg textarea::placeholder{color:var(--tx3);}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--ac);box-shadow:0 0 0 3px var(--acg);}
+.fg select option{background:var(--bg2);}
+.fsub{
+  width:100%;display:flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--tx);color:var(--bg);padding:13px;border-radius:9px;
+  font-family:'Epilogue';font-size:14px;font-weight:600;
+  border:none;cursor:pointer;transition:transform .2s,box-shadow .25s;
+}
+.fsub:hover{transform:translateY(-2px);box-shadow:var(--sh);}
+.fsub.ok{background:#10b981;color:#fff;}
+
+/* ── FOOTER ── */
+.site-footer{border-top:1px solid var(--bd);padding:34px 0;}
+.f-logo{font-family:'Fraunces',serif;font-weight:700;font-size:18px;color:var(--tx);}
+.f-logo span{color:var(--ac);}
+.f-copy{font-size:12px;color:var(--tx2);}
+.f-link{font-size:12px;color:var(--tx2);transition:color .2s;}
+.f-link:hover{color:var(--tx);}
+
+/* ── ANIMATIONS ── */
+@keyframes fi{from{opacity:0;}to{opacity:1;}}
+@keyframes ru{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
+.rev{opacity:0;transform:translateY(26px);transition:opacity .75s ease,transform .75s ease;}
+.revL{opacity:0;transform:translateX(-28px);transition:opacity .75s ease,transform .75s ease;}
+.revR{opacity:0;transform:translateX(28px);transition:opacity .75s ease,transform .75s ease;}
+.rev.on,.revL.on,.revR.on{opacity:1;transform:none;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:991.98px){
+  .sol-grid{grid-template-columns:repeat(2,1fr);}
+  .sec-pad{padding:72px 0;}
+  .contact-box{padding:40px 28px;}
+}
+@media(max-width:767.98px){
+  .desk-links,.nav-cta{display:none!important;}
+  .hamburger{display:flex;}
+  .hero-section{padding-top:82px;min-height:auto;}
+  .hero-h1{font-size:clamp(38px,11vw,62px);letter-spacing:-2px;}
+  .h-ring{width:230px;height:230px;}
+  .rb{font-size:52px;} .rb sup{font-size:20px;}
+  .rbadge{width:66px;} .rbn{font-size:13px;} .rbl{font-size:8px;}
+  .rbadge:nth-child(2){right:-13px;} .rbadge:nth-child(4){left:-13px;}
+  .sol-grid{grid-template-columns:1fr;}
+  .sec-pad{padding:56px 0;}
+  .contact-box{padding:28px 18px;border-radius:16px;}
+  .proc-step{grid-template-columns:44px 1fr;}
+  .proc-icon{display:none;}
+  .proc-body{padding:18px 16px;}
+}
+@media(max-width:575.98px){
+  .hero-h1{font-size:clamp(34px,12vw,52px);}
+  .h-ring{width:196px;height:196px;}
+  .rb{font-size:42px;} .rb sup{font-size:17px;}
+  .rbadge{width:56px;} .rbn{font-size:11.5px;} .rbl{font-size:7.5px;}
+  .rbadge:nth-child(1){top:-12px;} .rbadge:nth-child(3){bottom:-12px;}
+  .rbadge:nth-child(2){right:-12px;} .rbadge:nth-child(4){left:-12px;}
+  /* tech strip 2x2 */
+  .tech-strip{flex-wrap:wrap;}
+  .tech-item{flex:1 0 50%;min-width:0;}
+  .tech-item:nth-child(1),.tech-item:nth-child(2){border-bottom:1px solid var(--bd);}
+  .tech-item:nth-child(2){border-right:none;}
+  .tech-item:nth-child(4){border-right:none;}
+  /* contact strip stack */
+  .cs-strip{flex-direction:column;}
+  .cs-item{flex:none;width:100%;border-right:none!important;border-bottom:1px solid var(--bd)!important;}
+  .cs-item:last-child{border-bottom:none!important;}
+  .hero-btns{flex-direction:column;align-items:stretch;}
+  .btn-p,.btn-g{justify-content:center;}
+  .big-bg-txt{display:none;}
+  .cli-mq-item{padding:0 18px;height:60px;}
+  .cli-logo-img img{max-width:76px;max-height:36px;}
 }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════ NAV ═══════════════ -->
-<nav id="nav">
-  <a href="#" class="logo">
-    <div class="logo-mk">
-      <img src="images/swit_logo.png" alt="Swadesh IT Logo">
+<!-- NAV -->
+<nav id="mainNav" class="S">
+  <div class="container-xxl px-3 px-md-4">
+    <div class="nav-inner">
+      <a href="#" class="logo">
+        <div class="logo-mk"><img src="images/swit_logo.png" alt="Swadesh IT"></div>
+        <div>Swadesh IT<span class="logo-sub">Enterprise Software</span></div>
+      </a>
+      <ul class="desk-links">
+        <li><a href="#solutions">Solutions</a></li>
+        <li><a href="#clients">Clients</a></li>
+        <li><a href="#process">Process</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-right">
+        <div class="tt">
+          <button class="ttb" id="btnD" title="Dark"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z"/></svg></button>
+          <button class="ttb" id="btnL" title="Light"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></button>
+        </div>
+        <a href="#contact" class="nav-cta">Get in Touch <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+      </div>
     </div>
-    <div>Swadesh IT<span class="logo-sub">Enterprise Software</span></div>
-  </a>
-
-  <ul class="nav-ul">
-    <li><a href="#solutions">Solutions</a></li>
-    <li><a href="#clients">Clients</a></li>
-    <li><a href="#process">Process</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="contact.html">Contact</a></li>
-  </ul>
-
-  <div class="nav-r">
-    <div class="tt" id="tt">
-      <button class="ttb" id="btnD" title="Dark"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z"/></svg></button>
-      <button class="ttb" id="btnL" title="Light"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></button>
-    </div>
-    <a href="#contact" class="nav-cta">Get in Touch <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-    <button class="hamburger" id="hamburger" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
   </div>
 </nav>
 
-<!-- ═══════════════ MOBILE DRAWER ═══════════════ -->
+<!-- Mobile Drawer -->
 <div class="mob-drawer" id="mobDrawer">
   <nav class="mob-nav">
-    <a href="#solutions" class="mob-link">Solutions</a>
-    <a href="#clients" class="mob-link">Clients</a>
-    <a href="#process" class="mob-link">Process</a>
-    <a href="#about" class="mob-link">About</a>
-    <a href="contact.html" class="mob-link">Contact</a>
+    <a href="#solutions" class="ml">Solutions</a>
+    <a href="#clients" class="ml">Clients</a>
+    <a href="#process" class="ml">Process</a>
+    <a href="#about" class="ml">About</a>
+    <a href="contact.html" class="ml">Contact</a>
   </nav>
-  <div class="mob-footer-strip">
-    <div class="mob-info">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8"/></svg>
-      <span>+8801725167948</span>
-    </div>
-    <div class="mob-info">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-      <span>swadeshinfotecH@gmail.com</span>
-    </div>
-    <a href="#contact" class="mob-cta mob-link">
-      Start a Project
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </a>
+  <div class="mob-footer">
+    <div class="mob-info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07"/></svg><span>+8801725167948</span></div>
+    <div class="mob-info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span>swadeshinfotecH@gmail.com</span></div>
+    <a href="#contact" class="mob-cta ml">Start a Project <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
   </div>
 </div>
 
-<!-- ═══════════════ HERO ═══════════════ -->
-<section class="hero S">
-  <div class="hero-l">
-    <div class="kicker"><div class="kicker-ln"></div>Since 2006 · Dhaka, Bangladesh</div>
-    <h1 class="h1">Enterprise<br><em>Software</em><br><span class="out">Crafted.</span></h1>
-    <p class="hero-p">We build <strong>Oracle APEX</strong> and <strong>PHP/MySQL</strong> solutions — ERP, HR, accounting, hospital systems — for <strong>140+ clients</strong> across Bangladesh. Two decades of trust, zero compromise.</p>
-    <div class="ha">
-      <a href="#contact" class="bp">Start a Project <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-      <a href="#solutions" class="bt">Our Solutions <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-    </div>
-  </div>
-
-  <div class="hero-r">
-    <div class="h-ring">
-      <div class="rbadge"><div class="rbadge-i"><div class="rbn" data-count="20">20</div><div class="rbl">Years</div></div></div>
-      <div class="rbadge"><div class="rbadge-i"><div class="rbn" data-count="145">145</div><div class="rbl">Clients</div></div></div>
-      <div class="rbadge"><div class="rbadge-i"><div class="rbn" data-count="500">500</div><div class="rbl">Projects</div></div></div>
-      <div class="rbadge"><div class="rbadge-i"><div class="rbn" data-count="11">11</div><div class="rbl">Products</div></div></div>
-      <div class="rc"><div class="rb"><sup>+</sup>20</div><div class="rl">Years Strong</div></div>
-    </div>
-
-    <div class="hero-tech-strip">
-      <div class="hts-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
-        <span class="hts-name">Oracle</span>
+<!-- HERO -->
+<section class="hero-section S">
+  <div class="container-xxl px-3 px-md-4">
+    <div class="row align-items-center g-4 g-lg-5">
+      <div class="col-12 col-lg-6">
+        <div class="kicker"><div class="kicker-ln"></div>Since 2006 · Dhaka, Bangladesh</div>
+        <h1 class="hero-h1">Enterprise<br><em>Software</em><br><span class="out">Crafted.</span></h1>
+        <p class="hero-p">We build <strong>Oracle APEX</strong> and <strong>PHP/MySQL</strong> solutions — ERP, HR, accounting, hospital systems — for <strong>140+ clients</strong> across Bangladesh. Two decades of trust, zero compromise.</p>
+        <div class="hero-btns">
+          <a href="#contact" class="btn-p">Start a Project <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          <a href="#solutions" class="btn-g">Our Solutions <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </div>
       </div>
-      <div class="hts-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-        <span class="hts-name">PHP</span>
-      </div>
-      <div class="hts-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-        <span class="hts-name">MySQL</span>
-      </div>
-      <div class="hts-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-        <span class="hts-name">APEX</span>
-      </div>
-    </div>
-
-    <div class="h-strip">
-      <div class="hs-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        <div><strong>338, Haque Mansion</strong><span>North Badda, Dhaka-1212</span></div>
-      </div>
-      <div class="hs-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8"/><path d="M1 1l22 22"/></svg>
-        <div><strong>+8801725167948</strong><span>+8801836501233</span></div>
-      </div>
-      <div class="hs-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        <div><strong>swadeshinfotecH</strong><span>@gmail.com</span></div>
+      <div class="col-12 col-lg-6">
+        <div class="hero-right">
+          <div class="h-ring">
+            <div class="rbadge"><div class="rbadge-i"><div class="rbn" data-count="20">20</div><div class="rbl">Years</div></div></div>
+            <div class="rbadge"><div class="rbadge-i"><div class="rbn" data-count="145">145</div><div class="rbl">Clients</div></div></div>
+            <div class="rbadge"><div class="rbadge-i"><div class="rbn" data-count="500">500</div><div class="rbl">Projects</div></div></div>
+            <div class="rbadge"><div class="rbadge-i"><div class="rbn" data-count="11">11</div><div class="rbl">Products</div></div></div>
+            <div class="rc"><div class="rb"><sup>+</sup>20</div><div class="rl">Years Strong</div></div>
+          </div>
+          <div class="tech-strip">
+            <div class="tech-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg><span>Oracle</span></div>
+            <div class="tech-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg><span>PHP</span></div>
+            <div class="tech-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>MySQL</span></div>
+            <div class="tech-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>APEX</span></div>
+          </div>
+          <div class="cs-strip">
+            <div class="cs-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><div><strong>338, Haque Mansion</strong><span>North Badda, Dhaka-1212</span></div></div>
+            <div class="cs-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07"/></svg><div><strong>+8801725167948</strong><span>+8801836501233</span></div></div>
+            <div class="cs-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><div><strong>swadeshinfotecH</strong><span>@gmail.com</span></div></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════ MARQUEE ═══════════════ -->
-<div class="mq-w S">
-  <div class="mq">
-    <div class="mq-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg><span>iERPManager</span></div>
-    <div class="mq-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg><span>iSupplyChainManager</span></div>
-    <div class="mq-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg><span>iShopKeeper</span></div>
-    <div class="mq-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>iStoreManager</span></div>
-    <div class="mq-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg><span>iAccountManager</span></div>
-    <div class="mq-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg><span>iHRManager</span></div>
-    <div class="mq-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg><span>iSchoolManager</span></div>
-    <div class="mq-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/><path d="M8 7h8M8 11h5"/></svg><span>iBookShopManager</span></div>
-    <div class="mq-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><span>iPublicationManager</span></div>
-    <div class="mq-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg><span>iTradeManager</span></div>
-    <div class="mq-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span>eDoctors</span></div>
-    <!-- duplicate -->
-    <div class="mq-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg><span>iERPManager</span></div>
-    <div class="mq-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg><span>iSupplyChainManager</span></div>
-    <div class="mq-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg><span>iShopKeeper</span></div>
-    <div class="mq-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>iStoreManager</span></div>
-    <div class="mq-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg><span>iAccountManager</span></div>
-    <div class="mq-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg><span>iHRManager</span></div>
-    <div class="mq-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg><span>iSchoolManager</span></div>
-    <div class="mq-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span>eDoctors</span></div>
+<!-- PRODUCT MARQUEE -->
+<div class="mq-wrap S">
+  <div class="mq-track">
+    <div class="mq-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg><span>iERPManager</span></div>
+    <div class="mq-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg><span>iSupplyChainManager</span></div>
+    <div class="mq-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg><span>iShopKeeper</span></div>
+    <div class="mq-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>iStoreManager</span></div>
+    <div class="mq-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg><span>iAccountManager</span></div>
+    <div class="mq-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><span>iHRManager</span></div>
+    <div class="mq-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg><span>iSchoolManager</span></div>
+    <div class="mq-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span>eDoctors</span></div>
+    <div class="mq-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/></svg><span>iPublicationManager</span></div>
+    <div class="mq-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/></svg><span>iTradeManager</span></div>
+    <!-- dupe -->
+    <div class="mq-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg><span>iERPManager</span></div>
+    <div class="mq-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg><span>iSupplyChainManager</span></div>
+    <div class="mq-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg><span>iShopKeeper</span></div>
+    <div class="mq-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg><span>iAccountManager</span></div>
+    <div class="mq-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><span>iHRManager</span></div>
+    <div class="mq-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span>eDoctors</span></div>
   </div>
 </div>
 
-<!-- ═══════════════ SOLUTIONS ═══════════════ -->
-<div class="sol-bg S" id="solutions">
-  <div class="C sp">
-    <div class="sol-hdr">
-      <div class="rev"><div class="tag">Our Products</div><h2 class="sh2">11 Ready-Built<br><em>Software Products</em></h2></div>
-      <p class="sub rev" style="transition-delay:.1s">From ERP to doctor appointments — each product is feature-complete, customizable, and deployed for real businesses across Bangladesh.</p>
+<!-- SOLUTIONS -->
+<div class="sol-bg S sec-pad" id="solutions">
+  <div class="container-xxl px-3 px-md-4">
+    <div class="row align-items-end g-3 mb-4 mb-lg-5 rev">
+      <div class="col-12 col-md-6"><div class="tag-label">Our Products</div><h2 class="sec-title">11 Ready-Built<br><em>Software Products</em></h2></div>
+      <div class="col-12 col-md-6"><p class="sec-sub">From ERP to doctor appointments — each product is feature-complete, customizable, and deployed for real businesses across Bangladesh.</p></div>
     </div>
     <div class="sol-grid rev">
-      <div class="sol-card"><div class="sc-n">01/11</div><div class="sc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div><div class="sc-tag">ERP · Enterprise</div><div class="sc-name">iERPManager</div><p class="sc-desc">A Complete Enterprise Resource Planning System — inventory, procurement, finance & production unified.</p><a href="product_details.html" class="sc-btn">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
-      <div class="sol-card"><div class="sc-n">02/11</div><div class="sc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></div><div class="sc-tag">Supply Chain</div><div class="sc-name">iSupplyChainManager</div><p class="sc-desc">A Supply Chain Management System for garments, accessories & indenting businesses.</p><a href="product_details.html" class="sc-btn">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
-      <div class="sol-card"><div class="sc-n">03/11</div><div class="sc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></div><div class="sc-tag">POS · Retail</div><div class="sc-name">iShopKeeper</div><p class="sc-desc">A Complete POS System — ready to deploy for retail shops, fashion houses & mobile sellers.</p><a href="product_details.html" class="sc-btn">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
-      <div class="sol-card"><div class="sc-n">04/11</div><div class="sc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="sc-tag">Inventory</div><div class="sc-name">iStoreManager</div><p class="sc-desc">An Inventory Management System to track stock, movements & warehouse across multiple locations.</p><a href="product_details.html" class="sc-btn">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
-      <div class="sol-card"><div class="sc-n">05/11</div><div class="sc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div><div class="sc-tag">Accounting</div><div class="sc-name">iAccountManager</div><p class="sc-desc">An Account Management System — ledger, journals, financial reports, tax & multi-currency support.</p><a href="product_details.html" class="sc-btn">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
-      <div class="sol-card"><div class="sc-n">06/11</div><div class="sc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div><div class="sc-tag">HR · Payroll</div><div class="sc-name">iHRManager</div><p class="sc-desc">A Complete Human Resource Management System — attendance, leave, payroll, employee records.</p><a href="product_details.html" class="sc-btn">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
-      <div class="sol-card"><div class="sc-n">07/11</div><div class="sc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></div><div class="sc-tag">Education</div><div class="sc-name">iSchoolManager</div><p class="sc-desc">A School Management Software — student records, fees, attendance, results & staff management.</p><a href="product_details.html" class="sc-btn">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
-      <div class="sol-card"><div class="sc-n">08/11</div><div class="sc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/><path d="M8 7h8M8 11h5"/></svg></div><div class="sc-tag">Bookshop</div><div class="sc-name">iBookShopManager</div><p class="sc-desc">A Complete Book Shop Management System — catalog, sales, stock, publisher management.</p><a href="product_details.html" class="sc-btn">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
-      <div class="sol-card"><div class="sc-n">09/11</div><div class="sc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div><div class="sc-tag">Publication</div><div class="sc-name">iPublicationManager</div><p class="sc-desc">A Complete Publication & Sales Management Software for press, publishers & media companies.</p><a href="product_details.html" class="sc-btn">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
-      <div class="sol-card"><div class="sc-n">10/11</div><div class="sc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg></div><div class="sc-tag">Trade · Indenting</div><div class="sc-name">iTradeManager</div><p class="sc-desc">A Software for Indenting Business — managing trade orders, suppliers, buyers & commissions.</p><a href="product_details.html" class="sc-btn">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
-      <div class="sol-card"><div class="sc-n">11/11</div><div class="sc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div><div class="sc-tag">Healthcare</div><div class="sc-name">eDoctors</div><p class="sc-desc">A Doctor Appointment Software — patient scheduling, doctor profiles, appointment management.</p><a href="product_details.html" class="sc-btn">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
-      <div class="sol-card" style="background:var(--bg1);display:flex;align-items:center;justify-content:center"><div style="text-align:center"><div style="font-family:'JetBrains Mono';font-size:11px;color:var(--tx3);letter-spacing:1px;margin-bottom:8px">CUSTOM</div><div style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--tx2)">Need something<br>different?</div><a href="#contact" style="display:inline-flex;align-items:center;gap:5px;margin-top:14px;font-size:12px;font-weight:600;color:var(--ac)">Let's talk <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div></div>
+      <div class="sol-card"><div class="sc-n">01/11</div><div class="sc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div><div class="sc-cat">ERP · Enterprise</div><div class="sc-name">iERPManager</div><p class="sc-desc">Complete Enterprise Resource Planning — inventory, procurement, finance & production unified.</p><a href="product_details.html" class="sc-btn">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
+      <div class="sol-card"><div class="sc-n">02/11</div><div class="sc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></div><div class="sc-cat">Supply Chain</div><div class="sc-name">iSupplyChainManager</div><p class="sc-desc">Supply Chain Management for garments, accessories & indenting businesses.</p><a href="product_details.html" class="sc-btn">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
+      <div class="sol-card"><div class="sc-n">03/11</div><div class="sc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></div><div class="sc-cat">POS · Retail</div><div class="sc-name">iShopKeeper</div><p class="sc-desc">Complete POS System for retail shops, fashion houses & mobile sellers.</p><a href="product_details.html" class="sc-btn">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
+      <div class="sol-card"><div class="sc-n">04/11</div><div class="sc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="sc-cat">Inventory</div><div class="sc-name">iStoreManager</div><p class="sc-desc">Inventory Management — track stock, movements & warehouse across locations.</p><a href="product_details.html" class="sc-btn">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
+      <div class="sol-card"><div class="sc-n">05/11</div><div class="sc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div><div class="sc-cat">Accounting</div><div class="sc-name">iAccountManager</div><p class="sc-desc">Account Management — ledger, journals, financial reports, tax & multi-currency.</p><a href="product_details.html" class="sc-btn">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
+      <div class="sol-card"><div class="sc-n">06/11</div><div class="sc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div><div class="sc-cat">HR · Payroll</div><div class="sc-name">iHRManager</div><p class="sc-desc">HR Management — attendance, leave, payroll, employee records.</p><a href="product_details.html" class="sc-btn">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
+      <div class="sol-card"><div class="sc-n">07/11</div><div class="sc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></div><div class="sc-cat">Education</div><div class="sc-name">iSchoolManager</div><p class="sc-desc">School Management — student records, fees, attendance, results & staff.</p><a href="product_details.html" class="sc-btn">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
+      <div class="sol-card"><div class="sc-n">08/11</div><div class="sc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/><path d="M8 7h8M8 11h5"/></svg></div><div class="sc-cat">Bookshop</div><div class="sc-name">iBookShopManager</div><p class="sc-desc">Book Shop Management — catalog, sales, stock, publisher management.</p><a href="product_details.html" class="sc-btn">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
+      <div class="sol-card"><div class="sc-n">09/11</div><div class="sc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div><div class="sc-cat">Publication</div><div class="sc-name">iPublicationManager</div><p class="sc-desc">Publication & Sales Management for press, publishers & media companies.</p><a href="product_details.html" class="sc-btn">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
+      <div class="sol-card"><div class="sc-n">10/11</div><div class="sc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg></div><div class="sc-cat">Trade · Indenting</div><div class="sc-name">iTradeManager</div><p class="sc-desc">Indenting Business Software — trade orders, suppliers, buyers & commissions.</p><a href="product_details.html" class="sc-btn">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
+      <div class="sol-card"><div class="sc-n">11/11</div><div class="sc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div><div class="sc-cat">Healthcare</div><div class="sc-name">eDoctors</div><p class="sc-desc">Doctor Appointment Software — scheduling, doctor profiles, management.</p><a href="product_details.html" class="sc-btn">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
+      <div class="sol-card" style="background:var(--bg1);display:flex;align-items:center;justify-content:center;text-align:center"><div><div style="font-family:'JetBrains Mono';font-size:10px;color:var(--tx3);letter-spacing:1px;margin-bottom:8px">CUSTOM</div><div style="font-family:'Fraunces',serif;font-size:15px;font-weight:700;color:var(--tx2)">Need something<br>different?</div><a href="#contact" style="display:inline-flex;align-items:center;gap:5px;margin-top:10px;font-size:12px;font-weight:600;color:var(--ac)">Let's talk <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div></div>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════ CLIENT MARQUEE ═══════════════ -->
-<div class="mq-w cli-marquee-wrap">
-  <div class="mq">
-    <div class="mq-i cli-logo"><div class="cli-logo-img"><img src="images/_Bishwo_Shahitto_Ken.png" alt="Bishwo Shahitto Kendro"></div></div>
-    <div class="mq-i cli-logo"><div class="cli-logo-img"><img src="images/The Shanin Corporation Limited.png" alt="Shanin Group"></div></div>
-    <div class="mq-i cli-logo"><div class="cli-logo-img"><img src="images/MYA_Trading_Internat.png" alt="MYA Trading"></div></div>
-    <div class="mq-i cli-logo"><div class="cli-logo-img"><img src="images/Orientlink_BD_Limite.png" alt="Orientlink BD"></div></div>
-    <div class="mq-i cli-logo"><div class="cli-logo-img"><img src="images/Green_Tel.png" alt="Green Tel"></div></div>
-    <div class="mq-i cli-logo"><div class="cli-logo-img"><img src="images/MARUSHIMA.jpg" alt="MARUSHIMA"></div></div>
-    <div class="mq-i cli-logo"><div class="cli-logo-img"><img src="images/Enam.png" alt="Enam Trims"></div></div>
-    <div class="mq-i cli-logo"><div class="cli-logo-img"><img src="images/Baly.png" alt="Baly Integration"></div></div>
-    <div class="mq-i cli-logo"><div class="cli-logo-img"><img src="images/JFZ Labels.jpg" alt="JFZ Labels"></div></div>
-    <div class="mq-i cli-logo"><div class="cli-logo-img"><img src="images/Haircoat.png" alt="Haircoat"></div></div>
-    <div class="mq-i cli-logo"><div class="cli-logo-img"><img src="images/Nur_Mobile.png" alt="Nur Mobile"></div></div>
-    <div class="mq-i cli-logo"><div class="cli-logo-img"><img src="images/Mamoni Fashion House.png" alt="Mamoni Fashion"></div></div>
-    <div class="mq-i cli-logo"><div class="cli-logo-img"><img src="images/_Bishwo_Shahitto_Ken.png" alt="Bishwo Shahitto Kendro"></div></div>
-    <div class="mq-i cli-logo"><div class="cli-logo-img"><img src="images/The Shanin Corporation Limited.png" alt="Shanin Group"></div></div>
-    <div class="mq-i cli-logo"><div class="cli-logo-img"><img src="images/MYA_Trading_Internat.png" alt="MYA Trading"></div></div>
-    <div class="mq-i cli-logo"><div class="cli-logo-img"><img src="images/Orientlink_BD_Limite.png" alt="Orientlink BD"></div></div>
-    <div class="mq-i cli-logo"><div class="cli-logo-img"><img src="images/Green_Tel.png" alt="Green Tel"></div></div>
-    <div class="mq-i cli-logo"><div class="cli-logo-img"><img src="images/MARUSHIMA.jpg" alt="MARUSHIMA"></div></div>
-    <div class="mq-i cli-logo"><div class="cli-logo-img"><img src="images/Enam.png" alt="Enam Trims"></div></div>
-    <div class="mq-i cli-logo"><div class="cli-logo-img"><img src="images/Baly.png" alt="Baly Integration"></div></div>
-    <div class="mq-i cli-logo"><div class="cli-logo-img"><img src="images/JFZ Labels.jpg" alt="JFZ Labels"></div></div>
-    <div class="mq-i cli-logo"><div class="cli-logo-img"><img src="images/Haircoat.png" alt="Haircoat"></div></div>
-    <div class="mq-i cli-logo"><div class="cli-logo-img"><img src="images/Nur_Mobile.png" alt="Nur Mobile"></div></div>
-    <div class="mq-i cli-logo"><div class="cli-logo-img"><img src="images/Mamoni Fashion House.png" alt="Mamoni Fashion"></div></div>
+<!-- CLIENT LOGO MARQUEE -->
+<div class="cli-mq-wrap S">
+  <div class="mq-track">
+    <div class="mq-item cli-mq-item"><div class="cli-logo-img"><img src="images/_Bishwo_Shahitto_Ken.png" alt="Bishwo Shahitto Kendro"></div></div>
+    <div class="mq-item cli-mq-item"><div class="cli-logo-img"><img src="images/The Shanin Corporation Limited.png" alt="Shanin Group"></div></div>
+    <div class="mq-item cli-mq-item"><div class="cli-logo-img"><img src="images/MYA_Trading_Internat.png" alt="MYA Trading"></div></div>
+    <div class="mq-item cli-mq-item"><div class="cli-logo-img"><img src="images/Orientlink_BD_Limite.png" alt="Orientlink BD"></div></div>
+    <div class="mq-item cli-mq-item"><div class="cli-logo-img"><img src="images/Green_Tel.png" alt="Green Tel"></div></div>
+    <div class="mq-item cli-mq-item"><div class="cli-logo-img"><img src="images/MARUSHIMA.jpg" alt="MARUSHIMA"></div></div>
+    <div class="mq-item cli-mq-item"><div class="cli-logo-img"><img src="images/Enam.png" alt="Enam Trims"></div></div>
+    <div class="mq-item cli-mq-item"><div class="cli-logo-img"><img src="images/Baly.png" alt="Baly Integration"></div></div>
+    <div class="mq-item cli-mq-item"><div class="cli-logo-img"><img src="images/JFZ Labels.jpg" alt="JFZ Labels"></div></div>
+    <div class="mq-item cli-mq-item"><div class="cli-logo-img"><img src="images/Haircoat.png" alt="Haircoat"></div></div>
+    <div class="mq-item cli-mq-item"><div class="cli-logo-img"><img src="images/Nur_Mobile.png" alt="Nur Mobile"></div></div>
+    <div class="mq-item cli-mq-item"><div class="cli-logo-img"><img src="images/Mamoni Fashion House.png" alt="Mamoni Fashion"></div></div>
+    <div class="mq-item cli-mq-item"><div class="cli-logo-img"><img src="images/_Bishwo_Shahitto_Ken.png" alt="Bishwo Shahitto Kendro"></div></div>
+    <div class="mq-item cli-mq-item"><div class="cli-logo-img"><img src="images/The Shanin Corporation Limited.png" alt="Shanin Group"></div></div>
+    <div class="mq-item cli-mq-item"><div class="cli-logo-img"><img src="images/MYA_Trading_Internat.png" alt="MYA Trading"></div></div>
+    <div class="mq-item cli-mq-item"><div class="cli-logo-img"><img src="images/Orientlink_BD_Limite.png" alt="Orientlink BD"></div></div>
+    <div class="mq-item cli-mq-item"><div class="cli-logo-img"><img src="images/Green_Tel.png" alt="Green Tel"></div></div>
+    <div class="mq-item cli-mq-item"><div class="cli-logo-img"><img src="images/Enam.png" alt="Enam Trims"></div></div>
+    <div class="mq-item cli-mq-item"><div class="cli-logo-img"><img src="images/Baly.png" alt="Baly Integration"></div></div>
+    <div class="mq-item cli-mq-item"><div class="cli-logo-img"><img src="images/Haircoat.png" alt="Haircoat"></div></div>
+    <div class="mq-item cli-mq-item"><div class="cli-logo-img"><img src="images/Nur_Mobile.png" alt="Nur Mobile"></div></div>
   </div>
 </div>
 
-<!-- ═══════════════ CLIENTS ═══════════════ -->
-<div class="S" id="clients">
-  <div class="C sp">
-    <div class="cli-layout">
-      <div class="cli-sticky revL">
-        <div class="tag">Our Clients</div>
-        <h2 class="sh2">Trusted by<br><em>Bangladesh's<br>best</em></h2>
-        <p class="sub" style="margin-top:16px">From Dhaka corporates to regional businesses — 140+ organizations rely on our software every single day.</p>
-        <div style="margin-top:32px;display:flex;flex-direction:column;gap:10px">
-          <div style="font-family:'JetBrains Mono';font-size:11px;color:var(--tx3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Sectors served</div>
-          <div style="display:flex;flex-wrap:wrap;gap:8px">
-            <span class="atag">Garments</span><span class="atag">Trading</span><span class="atag">Healthcare</span>
-            <span class="atag">Publishing</span><span class="atag">Retail</span><span class="atag">Education</span>
-            <span class="atag">Corporate</span><span class="atag">Library</span>
+<!-- CLIENTS -->
+<div class="S sec-pad" id="clients">
+  <div class="container-xxl px-3 px-md-4">
+    <div class="row g-4 g-lg-5">
+      <div class="col-12 col-lg-3 revL">
+        <div style="position:sticky;top:100px">
+          <div class="tag-label">Our Clients</div>
+          <h2 class="sec-title">Trusted by<br><em>Bangladesh's<br>best</em></h2>
+          <p class="sec-sub mt-3">From Dhaka corporates to regional businesses — 140+ organizations rely on our software every day.</p>
+          <div class="mt-4">
+            <div style="font-family:'JetBrains Mono';font-size:10.5px;color:var(--tx3);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">Sectors served</div>
+            <div class="d-flex flex-wrap gap-2">
+              <span class="atag">Garments</span><span class="atag">Trading</span><span class="atag">Healthcare</span>
+              <span class="atag">Publishing</span><span class="atag">Retail</span><span class="atag">Education</span>
+              <span class="atag">Corporate</span><span class="atag">Library</span>
+            </div>
           </div>
         </div>
       </div>
-      <div class="cli-grid revR">
-        <div class="cli-card"><div class="cli-logo-box"><div class="cli-abbr">BSK</div></div><div class="cli-name">Bishwo Shahitto Kendra</div><div class="cli-sol">iPublicationManager · iBookShopManager</div><div class="cli-type">Publication & Library</div></div>
-        <div class="cli-card"><div class="cli-logo-box"><div class="cli-abbr">MYA</div></div><div class="cli-name">MYA Trading International</div><div class="cli-sol">iSupplyChainManager</div><div class="cli-type">Trading Company</div></div>
-        <div class="cli-card"><div class="cli-logo-box"><div class="cli-abbr">OBL</div></div><div class="cli-name">Orientlink BD Limited</div><div class="cli-sol">iShopKeeper</div><div class="cli-type">Import · Milk & Juice Seller</div></div>
-        <div class="cli-card"><div class="cli-logo-box"><div class="cli-abbr">ETL</div></div><div class="cli-name">Enam Trims Limited</div><div class="cli-sol">iSupplyChainManager</div><div class="cli-type">Garments Accessories</div></div>
-        <div class="cli-card"><div class="cli-logo-box"><div class="cli-abbr">BAL</div></div><div class="cli-name">Baly Integration Limited</div><div class="cli-sol">iSupplyChainManager</div><div class="cli-type">Corporate Company</div></div>
-        <div class="cli-card"><div class="cli-logo-box"><div class="cli-abbr">HRC</div></div><div class="cli-name">Haircoat</div><div class="cli-sol">iSupplyChainManager</div><div class="cli-type">Custom Hairpiece & Wig Factory</div></div>
-        <div class="cli-card"><div class="cli-logo-box"><div class="cli-abbr">JFZ</div></div><div class="cli-name">JFZ Labels</div><div class="cli-sol">iSupplyChainManager</div><div class="cli-type">Garments Labels</div></div>
-        <div class="cli-card"><div class="cli-logo-box"><div class="cli-abbr">SHN</div></div><div class="cli-name">Shanin Group</div><div class="cli-sol">iSupplyChainManager · iAccountManager</div><div class="cli-type">Garments Group · 10 Concerns</div></div>
-        <div class="cli-card"><div class="cli-logo-box"><div class="cli-abbr">GTL</div></div><div class="cli-name">Green Tel</div><div class="cli-sol">iShopKeeper</div><div class="cli-type">Mobile Hole Seller · Moulvibazar</div></div>
-        <div class="cli-card"><div class="cli-logo-box"><div class="cli-abbr">NUR</div></div><div class="cli-name">Nur Mobile</div><div class="cli-sol">iShopKeeper</div><div class="cli-type">Mobile Shop · Sylhet</div></div>
-        <div class="cli-card"><div class="cli-logo-box"><div class="cli-abbr">MMF</div></div><div class="cli-name">Mamoni Fashion</div><div class="cli-sol">iShopKeeper</div><div class="cli-type">Fashion House</div></div>
-        <div class="cli-card"><div class="cli-logo-box"><div class="cli-abbr">PM</div></div><div class="cli-name">Ponya Mela</div><div class="cli-sol">iShopKeeper</div><div class="cli-type">Monohari Shop</div></div>
-        <div class="cli-card"><div class="cli-logo-box"><div class="cli-abbr">MS</div></div><div class="cli-name">MS Monoronjon Shaha</div><div class="cli-sol">iShopKeeper</div><div class="cli-type">Village Shop</div></div>
-        <div class="cli-card"><div class="cli-logo-box"><div class="cli-abbr">PnR</div></div><div class="cli-name">PnR Industries Ltd.</div><div class="cli-sol">iSupplyChainManager</div><div class="cli-type">Industrial Company</div></div>
-        <div class="cli-card"><div class="cli-logo-box"><div class="cli-abbr">MAR</div></div><div class="cli-name">MARUSHIMA</div><div class="cli-sol">iSupplyChainManager</div><div class="cli-type">Indenting · Textiles · Uttara, Dhaka</div></div>
-        <div class="cli-card" style="border-style:dashed;display:flex;align-items:center;justify-content:center;min-height:120px"><div style="text-align:center;padding:20px"><div style="font-size:28px;font-family:'Fraunces',serif;font-weight:900;color:var(--tx3)">130+</div><div style="font-size:12px;color:var(--tx3);margin-top:4px">More clients</div></div></div>
+      <div class="col-12 col-lg-9 revR">
+        <div class="row g-3">
+          <div class="col-6 col-md-4"><div class="cli-card"><div class="cli-abbr">BSK</div><div class="cli-name">Bishwo Shahitto Kendra</div><div class="cli-sol">iPublicationManager · iBookShopManager</div><div class="cli-type">Publication & Library</div></div></div>
+          <div class="col-6 col-md-4"><div class="cli-card"><div class="cli-abbr">MYA</div><div class="cli-name">MYA Trading International</div><div class="cli-sol">iSupplyChainManager</div><div class="cli-type">Trading Company</div></div></div>
+          <div class="col-6 col-md-4"><div class="cli-card"><div class="cli-abbr">OBL</div><div class="cli-name">Orientlink BD Limited</div><div class="cli-sol">iShopKeeper</div><div class="cli-type">Import · Milk & Juice</div></div></div>
+          <div class="col-6 col-md-4"><div class="cli-card"><div class="cli-abbr">ETL</div><div class="cli-name">Enam Trims Limited</div><div class="cli-sol">iSupplyChainManager</div><div class="cli-type">Garments Accessories</div></div></div>
+          <div class="col-6 col-md-4"><div class="cli-card"><div class="cli-abbr">BAL</div><div class="cli-name">Baly Integration Ltd</div><div class="cli-sol">iSupplyChainManager</div><div class="cli-type">Corporate Company</div></div></div>
+          <div class="col-6 col-md-4"><div class="cli-card"><div class="cli-abbr">HRC</div><div class="cli-name">Haircoat</div><div class="cli-sol">iSupplyChainManager</div><div class="cli-type">Hairpiece & Wig Factory</div></div></div>
+          <div class="col-6 col-md-4"><div class="cli-card"><div class="cli-abbr">JFZ</div><div class="cli-name">JFZ Labels</div><div class="cli-sol">iSupplyChainManager</div><div class="cli-type">Garments Labels</div></div></div>
+          <div class="col-6 col-md-4"><div class="cli-card"><div class="cli-abbr">SHN</div><div class="cli-name">Shanin Group</div><div class="cli-sol">iSupplyChainManager · iAccountManager</div><div class="cli-type">Garments · 10 Concerns</div></div></div>
+          <div class="col-6 col-md-4"><div class="cli-card"><div class="cli-abbr">GTL</div><div class="cli-name">Green Tel</div><div class="cli-sol">iShopKeeper</div><div class="cli-type">Mobile Seller · Moulvibazar</div></div></div>
+          <div class="col-6 col-md-4"><div class="cli-card"><div class="cli-abbr">NUR</div><div class="cli-name">Nur Mobile</div><div class="cli-sol">iShopKeeper</div><div class="cli-type">Mobile Shop · Sylhet</div></div></div>
+          <div class="col-6 col-md-4"><div class="cli-card"><div class="cli-abbr">MMF</div><div class="cli-name">Mamoni Fashion</div><div class="cli-sol">iShopKeeper</div><div class="cli-type">Fashion House</div></div></div>
+          <div class="col-6 col-md-4"><div class="cli-card"><div class="cli-abbr">PM</div><div class="cli-name">Ponya Mela</div><div class="cli-sol">iShopKeeper</div><div class="cli-type">Monohari Shop</div></div></div>
+          <div class="col-6 col-md-4"><div class="cli-card"><div class="cli-abbr">MS</div><div class="cli-name">MS Monoronjon Shaha</div><div class="cli-sol">iShopKeeper</div><div class="cli-type">Village Shop</div></div></div>
+          <div class="col-6 col-md-4"><div class="cli-card"><div class="cli-abbr">PnR</div><div class="cli-name">PnR Industries Ltd.</div><div class="cli-sol">iSupplyChainManager</div><div class="cli-type">Industrial Company</div></div></div>
+          <div class="col-6 col-md-4"><div class="cli-card"><div class="cli-abbr">MAR</div><div class="cli-name">MARUSHIMA</div><div class="cli-sol">iSupplyChainManager</div><div class="cli-type">Indenting · Textiles</div></div></div>
+          <div class="col-6 col-md-4"><div class="cli-more"><div class="text-center"><div style="font-size:24px;font-family:'Fraunces',serif;font-weight:900;color:var(--tx3)">130+</div><div style="font-size:11.5px;color:var(--tx3);margin-top:4px">More clients</div></div></div></div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════ PROCESS ═══════════════ -->
-<div class="proc-bg S" id="process">
-  <div class="C sp">
-    <div class="rev">
-      <div class="tag">How We Work</div>
-      <h2 class="sh2">Our 7-Step<br><em>Development Process</em></h2>
-      <p class="sub" style="margin-top:0">Every project follows a rigorous methodology — from requirement analysis to post-launch maintenance — ensuring on-time, on-budget delivery.</p>
+<!-- PROCESS -->
+<div class="proc-bg S sec-pad" id="process">
+  <div class="container-xxl px-3 px-md-4">
+    <div class="row mb-4 mb-lg-5 rev">
+      <div class="col-12 col-md-8"><div class="tag-label">How We Work</div><h2 class="sec-title">Our 7-Step<br><em>Development Process</em></h2><p class="sec-sub">Every project follows a rigorous methodology — from requirement analysis to post-launch maintenance.</p></div>
     </div>
-    <div class="proc-grid rev" style="transition-delay:.12s">
-      <div class="proc-step">
-        <div class="proc-num-col"><div class="proc-num">1</div><div class="proc-line"></div></div>
-        <div class="proc-body"><div class="proc-title">Planning</div><p class="proc-desc">We define the full scope of the project — identifying requirements, estimating resources, timeline, and cost. A clear scope document is produced before any code is written.</p></div>
-        <div class="proc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-      </div>
-      <div class="proc-step">
-        <div class="proc-num-col"><div class="proc-num">2</div><div class="proc-line"></div></div>
-        <div class="proc-body"><div class="proc-title">Systems Analysis & Requirements</div><p class="proc-desc">We conduct thorough business analysis — interviewing stakeholders, mapping workflows, and documenting functional requirements so the solution perfectly fits end-user needs.</p></div>
-        <div class="proc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
-      </div>
-      <div class="proc-step">
-        <div class="proc-num-col"><div class="proc-num">3</div><div class="proc-line"></div></div>
-        <div class="proc-body"><div class="proc-title">Systems Design</div><p class="proc-desc">We architect the database schema, UI/UX wireframes, module structure, and integration points. High-level and low-level design documents are produced and reviewed with the client.</p></div>
-        <div class="proc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M4.93 4.93a10 10 0 000 14.14"/></svg></div>
-      </div>
-      <div class="proc-step">
-        <div class="proc-num-col"><div class="proc-num">4</div><div class="proc-line"></div></div>
-        <div class="proc-body"><div class="proc-title">Development</div><p class="proc-desc">Our certified Oracle APEX and PHP/MySQL developers build the system module by module. Code is reviewed internally at each sprint, with live demos shared with the client regularly.</p></div>
-        <div class="proc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
-      </div>
-      <div class="proc-step">
-        <div class="proc-num-col"><div class="proc-num">5</div><div class="proc-line"></div></div>
-        <div class="proc-body"><div class="proc-title">Integration & Testing</div><p class="proc-desc">QA professionals conduct functional, performance, and security testing. All modules are integrated and tested against the original requirements to ensure zero defects at go-live.</p></div>
-        <div class="proc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
-      </div>
-      <div class="proc-step">
-        <div class="proc-num-col"><div class="proc-num">6</div><div class="proc-line"></div></div>
-        <div class="proc-body"><div class="proc-title">Implementation & Deployment</div><p class="proc-desc">We deploy to Oracle Cloud or on-premise servers (client's choice), migrate existing data, configure user access, and conduct staff training to ensure smooth adoption from day one.</p></div>
-        <div class="proc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-      </div>
-      <div class="proc-step">
-        <div class="proc-num-col"><div class="proc-num">7</div></div>
-        <div class="proc-body"><div class="proc-title">Operations & Maintenance</div><p class="proc-desc">Post-launch, we provide ongoing support — bug fixes, performance tuning, new feature additions, and system upgrades. Our clients rely on us for years, not just the initial build.</p></div>
-        <div class="proc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></div>
-      </div>
+    <div class="proc-wrap rev">
+      <div class="proc-step"><div class="proc-num-col"><div class="proc-num">1</div><div class="proc-line"></div></div><div class="proc-body"><div class="proc-title">Planning</div><p class="proc-desc">We define the full scope — identifying requirements, estimating resources, timeline, and cost. A clear scope document is produced before any code is written.</p></div><div class="proc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div></div>
+      <div class="proc-step"><div class="proc-num-col"><div class="proc-num">2</div><div class="proc-line"></div></div><div class="proc-body"><div class="proc-title">Systems Analysis & Requirements</div><p class="proc-desc">We conduct thorough business analysis — interviewing stakeholders, mapping workflows, and documenting requirements so the solution perfectly fits end-user needs.</p></div><div class="proc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div></div>
+      <div class="proc-step"><div class="proc-num-col"><div class="proc-num">3</div><div class="proc-line"></div></div><div class="proc-body"><div class="proc-title">Systems Design</div><p class="proc-desc">We architect the database schema, UI/UX wireframes, and module structure. Design documents are reviewed with the client before development begins.</p></div><div class="proc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M4.93 4.93a10 10 0 000 14.14"/></svg></div></div>
+      <div class="proc-step"><div class="proc-num-col"><div class="proc-num">4</div><div class="proc-line"></div></div><div class="proc-body"><div class="proc-title">Development</div><p class="proc-desc">Our certified Oracle APEX and PHP/MySQL developers build module by module with regular live demos shared with the client at each sprint.</p></div><div class="proc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div></div>
+      <div class="proc-step"><div class="proc-num-col"><div class="proc-num">5</div><div class="proc-line"></div></div><div class="proc-body"><div class="proc-title">Integration & Testing</div><p class="proc-desc">QA conducts functional, performance, and security testing. All modules are integrated and tested against requirements to ensure zero defects at go-live.</p></div><div class="proc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div></div>
+      <div class="proc-step"><div class="proc-num-col"><div class="proc-num">6</div><div class="proc-line"></div></div><div class="proc-body"><div class="proc-title">Implementation & Deployment</div><p class="proc-desc">We deploy to Oracle Cloud or on-premise, migrate data, configure access, and conduct staff training to ensure smooth adoption from day one.</p></div><div class="proc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div></div>
+      <div class="proc-step"><div class="proc-num-col"><div class="proc-num">7</div></div><div class="proc-body"><div class="proc-title">Operations & Maintenance</div><p class="proc-desc">Post-launch support — bug fixes, performance tuning, new features, and upgrades. Our clients rely on us for years, not just the initial build.</p></div><div class="proc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></div></div>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════ ABOUT ═══════════════ -->
-<div class="S" id="about">
-  <div class="C sp">
-    <div class="about-grid">
-      <div class="about-l revL">
-        <div class="big-bg-txt">20</div>
-        <div class="about-content">
-          <div class="tag">About Swadesh IT</div>
-          <h2 class="sh2">Two decades<br><em>of delivery</em></h2>
-          <p class="sub">Founded in 2006, Swadesh IT is one of Bangladesh's most experienced software companies — built on the philosophy that clients deserve first-world quality at third-world prices.</p>
-          <div class="about-pts">
-            <div class="apt"><span class="apt-idx">01</span><div><div class="apt-h">Oracle APEX Specialists</div><p class="apt-p">We work exclusively with Oracle Tools — Developer Suite & Apex — on Oracle Cloud. High availability, 99.96% uptime, and 3-geo backup as standard.</p></div></div>
-            <div class="apt"><span class="apt-idx">02</span><div><div class="apt-h">100% Custom, Never Generic</div><p class="apt-p">We freeze requirements before writing a single line. Every deliverable is built precisely to what was agreed — backed by client satisfaction guarantee.</p></div></div>
-            <div class="apt"><span class="apt-idx">03</span><div><div class="apt-h">Mobile-Ready Reports</div><p class="apt-p">All systems deliver dynamic reports via mobile or TAB — owners can monitor business status from anywhere, anytime, with any device.</p></div></div>
-            <div class="apt"><span class="apt-idx">04</span><div><div class="apt-h">Security & Confidentiality</div><p class="apt-p">SSL Certificate, role-based access control, SSL-encrypted data transactions, and strict NDA policy. Your business data stays yours.</p></div></div>
+<!-- ABOUT -->
+<div class="S sec-pad" id="about">
+  <div class="container-xxl px-3 px-md-4">
+    <div class="row g-4 g-lg-5 align-items-center">
+      <div class="col-12 col-lg-6 revL">
+        <div style="position:relative">
+          <div class="big-bg-txt">20</div>
+          <div class="about-content">
+            <div class="tag-label">About Swadesh IT</div>
+            <h2 class="sec-title">Two decades<br><em>of delivery</em></h2>
+            <p class="sec-sub">Founded in 2006, Swadesh IT is one of Bangladesh's most experienced software companies — built on the philosophy that clients deserve first-world quality at third-world prices.</p>
+            <div class="mt-4">
+              <div class="apt"><span class="apt-idx">01</span><div><div class="apt-h">Oracle APEX Specialists</div><p class="apt-p">We work exclusively with Oracle Tools on Oracle Cloud. High availability, 99.96% uptime, and 3-geo backup as standard.</p></div></div>
+              <div class="apt"><span class="apt-idx">02</span><div><div class="apt-h">100% Custom, Never Generic</div><p class="apt-p">We freeze requirements before writing a single line. Every deliverable is built precisely to what was agreed.</p></div></div>
+              <div class="apt"><span class="apt-idx">03</span><div><div class="apt-h">Mobile-Ready Reports</div><p class="apt-p">All systems deliver dynamic reports via mobile or TAB — owners can monitor business from anywhere, anytime.</p></div></div>
+              <div class="apt"><span class="apt-idx">04</span><div><div class="apt-h">Security & Confidentiality</div><p class="apt-p">SSL Certificate, role-based access control, and strict NDA policy. Your business data stays yours.</p></div></div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="about-r revR">
-        <div class="ceo-card">
-          <div class="ceo-av"><img src="images/MisbahUddin.jpg" alt="" style="border-radius:20%;width:90%"></div>
-          <div>
-            <div class="ceo-name">Mohammad Misbah Uddin</div>
-            <div class="ceo-role">CEO & Founder</div>
-            <div class="ceo-creds">M.Sc (Physics), SUST · Diploma in Oracle DB Design & Development · DCA · Oracle Certified Professional (OCP)</div>
+      <div class="col-12 col-lg-6 revR">
+        <div class="d-flex flex-column gap-3">
+          <div class="ceo-card">
+            <div class="ceo-av"><img src="images/MisbahUddin.jpg" alt="" style="border-radius:20%;width:90%"></div>
+            <div><div class="ceo-name">Mohammad Misbah Uddin</div><div class="ceo-role">CEO & Founder</div><div class="ceo-creds">M.Sc (Physics), SUST · Diploma in Oracle DB · DCA · Oracle Certified Professional (OCP)</div></div>
           </div>
-        </div>
-        <div class="astat"><div class="astat-n"><span data-count="145">0</span></div><div class="astat-l">Active clients across Bangladesh</div><div class="abar"><div class="afill" style="width:0" data-fill="96%"></div></div></div>
-        <div class="astat"><div class="astat-n"><span data-count="500">0</span></div><div class="astat-l">Projects successfully delivered since 2006</div><div class="abar"><div class="afill" style="width:0" data-fill="100%"></div></div></div>
-        <div class="astat"><div class="astat-n"><span data-count="11">0</span></div><div class="astat-l">Proprietary software products available now</div><div class="abar"><div class="afill" style="width:0" data-fill="78%"></div></div></div>
-        <div class="atags">
-          <span class="atag">Oracle OCP Certified</span><span class="atag">PHP Expert</span>
-          <span class="atag">RAD Development</span><span class="atag">Cloud Hosted</span>
-          <span class="atag">NDA Policy</span><span class="atag">On-Premise Option</span>
-          <span class="atag">SMS & Email Integrated</span><span class="atag">Multi-Language</span>
+          <div class="astat"><div class="astat-n"><span data-count="145">0</span></div><div class="astat-l">Active clients across Bangladesh</div><div class="abar"><div class="afill" style="width:0" data-fill="96%"></div></div></div>
+          <div class="astat"><div class="astat-n"><span data-count="500">0</span></div><div class="astat-l">Projects successfully delivered since 2006</div><div class="abar"><div class="afill" style="width:0" data-fill="100%"></div></div></div>
+          <div class="astat"><div class="astat-n"><span data-count="11">0</span></div><div class="astat-l">Proprietary software products available now</div><div class="abar"><div class="afill" style="width:0" data-fill="78%"></div></div></div>
+          <div class="d-flex flex-wrap gap-2">
+            <span class="atag">Oracle OCP Certified</span><span class="atag">PHP Expert</span>
+            <span class="atag">RAD Development</span><span class="atag">Cloud Hosted</span>
+            <span class="atag">NDA Policy</span><span class="atag">On-Premise Option</span>
+            <span class="atag">SMS & Email Integrated</span><span class="atag">Multi-Language</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════ CONTACT ═══════════════ -->
-<div class="S" id="contact" style="padding-bottom:0">
-  <div class="C sp" style="padding-top:0">
+<!-- CONTACT -->
+<div class="S sec-pad" id="contact">
+  <div class="container-xxl px-3 px-md-4">
     <div class="contact-box rev">
-      <div class="contact-in">
-        <div class="c-l">
-          <h2>Let's build<br><span>something<br>remarkable</span></h2>
-          <p>Tell us about your project. We'll get back to you within 24 hours with an honest plan and clear pricing.</p>
-          <div class="c-info">
+      <div class="row g-4 g-lg-5">
+        <div class="col-12 col-lg-5">
+          <h2 class="contact-h">Let's build<br><span>something<br>remarkable</span></h2>
+          <p class="sec-sub mb-4">Tell us about your project. We'll get back to you within 24 hours with an honest plan and clear pricing.</p>
+          <div class="d-flex flex-column gap-3">
             <div class="ci-row"><div class="ci-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><strong>338, Haque Mansion, Moynarbag</strong>Hossain Market, North Badda, Dhaka-1212</div></div>
             <div class="ci-row"><div class="ci-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.03 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/></svg></div><div><strong>+8801725167948 · +8801836501233</strong>Mon–Sat, 9am–6pm</div></div>
             <div class="ci-row"><div class="ci-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><strong>swadeshinfotecH@gmail.com</strong>24-hour response guaranteed</div></div>
             <div class="ci-row"><div class="ci-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><div><strong>Free Consultation · NDA Available</strong>Your idea stays confidential</div></div>
           </div>
         </div>
-        <form class="cf" onsubmit="return false">
-          <div class="fr">
-            <div class="fg"><label>Full Name</label><input type="text" placeholder="Your name"></div>
-            <div class="fg"><label>Phone</label><input type="tel" placeholder="+880 1X XXXX XXXX"></div>
-          </div>
-          <div class="fg"><label>Email Address</label><input type="email" placeholder="you@company.com"></div>
-          <div class="fg"><label>Software / Product</label>
-            <select>
-              <option value="">Select a product or category...</option>
-              <option>iERPManager — Enterprise Resource Planning</option>
-              <option>iSupplyChainManager — Supply Chain</option>
-              <option>iShopKeeper — POS System</option>
-              <option>iStoreManager — Inventory</option>
-              <option>iAccountManager — Accounting</option>
-              <option>iHRManager — HR & Payroll</option>
-              <option>iSchoolManager — School Management</option>
-              <option>iBookShopManager — Book Shop</option>
-              <option>iPublicationManager — Publication</option>
-              <option>iTradeManager — Trade / Indenting</option>
-              <option>eDoctors — Doctor Appointment</option>
-              <option>Custom PHP/MySQL Software</option>
-              <option>Oracle APEX Custom App</option>
-              <option>Other / Not Sure</option>
-            </select>
-          </div>
-          <div class="fg"><label>Project Details</label><textarea rows="4" placeholder="Briefly describe what you need — industry, scale, key features..."></textarea></div>
-          <button class="fsub" id="fsub" type="button">
-            Send Message
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </button>
-        </form>
+        <div class="col-12 col-lg-7">
+          <form onsubmit="return false">
+            <div class="row g-3">
+              <div class="col-12 col-sm-6"><div class="fg"><label>Full Name</label><input type="text" placeholder="Your name"></div></div>
+              <div class="col-12 col-sm-6"><div class="fg"><label>Phone</label><input type="tel" placeholder="+880 1X XXXX XXXX"></div></div>
+              <div class="col-12"><div class="fg"><label>Email Address</label><input type="email" placeholder="you@company.com"></div></div>
+              <div class="col-12"><div class="fg"><label>Software / Product</label>
+                <select>
+                  <option value="">Select a product or category...</option>
+                  <option>iERPManager — Enterprise Resource Planning</option>
+                  <option>iSupplyChainManager — Supply Chain</option>
+                  <option>iShopKeeper — POS System</option>
+                  <option>iStoreManager — Inventory</option>
+                  <option>iAccountManager — Accounting</option>
+                  <option>iHRManager — HR & Payroll</option>
+                  <option>iSchoolManager — School Management</option>
+                  <option>iBookShopManager — Book Shop</option>
+                  <option>iPublicationManager — Publication</option>
+                  <option>iTradeManager — Trade / Indenting</option>
+                  <option>eDoctors — Doctor Appointment</option>
+                  <option>Custom PHP/MySQL Software</option>
+                  <option>Oracle APEX Custom App</option>
+                  <option>Other / Not Sure</option>
+                </select>
+              </div></div>
+              <div class="col-12"><div class="fg"><label>Project Details</label><textarea rows="4" placeholder="Briefly describe what you need — industry, scale, key features..."></textarea></div></div>
+              <div class="col-12"><button class="fsub" id="fsub" type="button">Send Message <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════ FOOTER ═══════════════ -->
-<footer class="S">
-  <div class="C">
-    <div class="foot">
+<!-- FOOTER -->
+<footer class="site-footer S">
+  <div class="container-xxl px-3 px-md-4">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 text-center text-md-start">
       <div class="f-logo">Swadesh <span>IT</span></div>
       <div class="f-copy">© 2006–2026 Swadesh IT · All Rights Reserved · swadeshitbd.com</div>
-      <div class="f-links">
-        <a href="#solutions">Solutions</a>
-        <a href="#clients">Clients</a>
-        <a href="#process">Process</a>
-        <a href="#contact">Contact</a>
+      <div class="d-flex gap-3 flex-wrap justify-content-center">
+        <a href="#solutions" class="f-link">Solutions</a>
+        <a href="#clients" class="f-link">Clients</a>
+        <a href="#process" class="f-link">Process</a>
+        <a href="#contact" class="f-link">Contact</a>
       </div>
     </div>
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-/* ── THEME ── */
+/* THEME */
 const root=document.documentElement,bD=document.getElementById('btnD'),bL=document.getElementById('btnL');
-function setTheme(t){
-  root.setAttribute('data-theme',t);
-  localStorage.setItem('sit',t);
-  bD.classList.toggle('on',t==='dark');
-  bL.classList.toggle('on',t==='light');
-}
+function setTheme(t){root.setAttribute('data-theme',t);localStorage.setItem('sit',t);bD.classList.toggle('on',t==='dark');bL.classList.toggle('on',t==='light');}
 setTheme(localStorage.getItem('sit')||'dark');
 bD.addEventListener('click',()=>setTheme('dark'));
 bL.addEventListener('click',()=>setTheme('light'));
 
-/* ── NAV SCROLL ── */
-const navEl=document.getElementById('nav');
-window.addEventListener('scroll',()=>navEl.classList.toggle('pin',scrollY>60));
+/* NAV */
+window.addEventListener('scroll',()=>document.getElementById('mainNav').classList.toggle('pin',scrollY>60));
 
-/* ── HAMBURGER / DRAWER ── */
-const hamburger=document.getElementById('hamburger');
-const drawer=document.getElementById('mobDrawer');
-let drawerOpen=false;
+/* HAMBURGER */
+const hb=document.getElementById('hamburger'),dr=document.getElementById('mobDrawer');
+let op=false;
+function tog(v){op=v;hb.classList.toggle('open',v);dr.classList.toggle('open',v);document.body.style.overflow=v?'hidden':'';}
+hb.addEventListener('click',()=>tog(!op));
+document.querySelectorAll('.ml').forEach(l=>l.addEventListener('click',()=>tog(false)));
+window.addEventListener('resize',()=>{if(window.innerWidth>767)tog(false);});
 
-function toggleDrawer(open){
-  drawerOpen=open;
-  hamburger.classList.toggle('open',open);
-  drawer.classList.toggle('open',open);
-  document.body.style.overflow=open?'hidden':'';
-}
+/* REVEAL */
+const ro=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('on');ro.unobserve(x.target);}});},{threshold:.08,rootMargin:'0px 0px -36px 0px'});
+document.querySelectorAll('.rev,.revL,.revR').forEach((el,i)=>{el.style.transitionDelay=(i%5*.08)+'s';ro.observe(el);});
 
-hamburger.addEventListener('click',()=>toggleDrawer(!drawerOpen));
-
-// Close drawer when a link is clicked
-document.querySelectorAll('.mob-link').forEach(link=>{
-  link.addEventListener('click',()=>toggleDrawer(false));
-});
-
-// Close on backdrop tap (outside drawer content)
-drawer.addEventListener('click',(e)=>{
-  if(e.target===drawer)toggleDrawer(false);
-});
-
-// Close drawer on resize to desktop
-window.addEventListener('resize',()=>{
-  if(window.innerWidth>900)toggleDrawer(false);
-});
-
-/* ── REVEAL ── */
-const ro=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');ro.unobserve(e.target)}});
-},{threshold:.08,rootMargin:'0px 0px -36px 0px'});
-document.querySelectorAll('.rev,.revL,.revR').forEach((el,i)=>{
-  el.style.transitionDelay=(i%5*.08)+'s';
-  ro.observe(el);
-});
-
-/* ── COUNTERS ── */
-function cnt(el,n){
-  const d=1800;let s=null;
-  requestAnimationFrame(function f(ts){
-    if(!s)s=ts;
-    const p=Math.min((ts-s)/d,1);
-    const e=1-Math.pow(1-p,3);
-    el.textContent=Math.round(e*n)+(p>=1?'+':'');
-    if(p<1)requestAnimationFrame(f);
-  });
-}
-const co=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){cnt(e.target,+e.target.dataset.count);co.unobserve(e.target)}});
-},{threshold:.6});
+/* COUNTERS */
+function cnt(el,n){const d=1800;let s=null;requestAnimationFrame(function f(ts){if(!s)s=ts;const p=Math.min((ts-s)/d,1),e=1-Math.pow(1-p,3);el.textContent=Math.round(e*n)+(p>=1?'+':'');if(p<1)requestAnimationFrame(f);});}
+const co=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){cnt(x.target,+x.target.dataset.count);co.unobserve(x.target);}});},{threshold:.6});
 document.querySelectorAll('[data-count]').forEach(el=>co.observe(el));
 
-/* ── BAR FILLS ── */
-const bo=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.style.width=e.target.dataset.fill;bo.unobserve(e.target)}});
-},{threshold:.5});
+/* BAR FILLS */
+const bo=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.style.width=x.target.dataset.fill;bo.unobserve(x.target);}});},{threshold:.5});
 document.querySelectorAll('[data-fill]').forEach(el=>bo.observe(el));
 
-/* ── FORM ── */
+/* FORM */
 document.getElementById('fsub').addEventListener('click',function(){
-  const svg='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="20 6 9 17 4 12"/></svg>';
-  this.innerHTML='Sent! '+svg;this.classList.add('ok');
-  setTimeout(()=>{
-    this.innerHTML='Send Message <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
-    this.classList.remove('ok');
-  },3000);
+  const ok='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="20 6 9 17 4 12"/></svg>';
+  this.innerHTML='Sent! '+ok;this.classList.add('ok');
+  setTimeout(()=>{this.innerHTML='Send Message <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';this.classList.remove('ok');},3000);
 });
 </script>
 </body>
